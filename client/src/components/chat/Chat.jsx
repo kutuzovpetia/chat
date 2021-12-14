@@ -30,7 +30,21 @@ const Chat = () =>{
             </div>
 
             <div className={s.chatContent}>
-                <h1>Content</h1>
+
+                <div className={s.message}>
+                    <p>
+                        If you guys are free; we’re going to mt baldy Sunday and will be doing some training all (~8am to 1pm)
+                    </p>
+                </div>
+
+                <div className={s.message}>
+                    <img src="" alt="avatar"/>
+
+                    <p>
+                        If you guys are free; we’re going to mt baldy Sunday and will be doing some training all (~8am to 1pm)
+                    </p>
+                </div>
+
             </div>
 
             {/*Input Message*/}

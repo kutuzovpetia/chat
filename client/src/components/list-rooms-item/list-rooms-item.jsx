@@ -2,9 +2,10 @@ import s from './style.module.sass';
 import {useNavigate} from "react-router-dom";
 
 const ListRoomsItem = ({img, userName, time, text}) =>{
-    const navigate = useNavigate();
 
-    const to = () => navigate('/chat')
+    const navigate = useNavigate();
+    const to = () => navigate('/chat');
+
     return(
         <>
             <div className={s.itemWrapper} onClick={to}>
