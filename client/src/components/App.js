@@ -10,8 +10,8 @@ function App() {
         <div className={s.app}>
 
             <Routes>
-                <Route path="/" element={<Rooms/>}/>
-                <Route path="/chat" element={<Chat/>}/>
+                {/*<Route path="/" element={<Rooms/>}/>*/}
+                <Route path="/" element={<Chat/>}/>
                 <Route path="*" element={<Error404/>}/>
             </Routes>
         </div>
