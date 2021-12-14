@@ -7,10 +7,7 @@ const Message = ({ own, text }) =>{
     const send = { bottom: '-112px', right: 0}
     const receive = { bottom: '-112px', left: 0}
 
-    const openMenu = () => {
-        setMenuActive(!menuActive)
-        console.log(menuActive)
-    }
+    const openMenu = () => setMenuActive(!menuActive)
 
     return(
         <div className={s.messageWrapper}>
