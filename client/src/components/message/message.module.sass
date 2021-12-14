@@ -1,0 +1,81 @@
+$send-bg: #0B93F6
+$send-color: white
+$receive-bg: #E5E5EA
+$receive-text: black
+$page-background: white
+
+.messageWrapper
+  display: flex
+  flex-direction: column
+  position: relative
+  h6
+    max-width: 255px
+    word-wrap: break-word
+    margin-bottom: 12px
+    line-height: 24px
+    position: relative
+    padding: 10px 20px
+    border-radius: 25px
+    font-size: 15px
+    &:before, &:after
+      content: ""
+      position: absolute
+      bottom: 0
+      height: 25px
+
+
+  .send
+    color: $send-color
+    background: $send-bg
+    align-self: flex-end
+    &:before
+      right: -7px
+      width: 20px
+      background-color: $send-bg
+      border-bottom-left-radius: 16px 14px
+    &:after
+      right: -26px
+      width: 26px
+      background-color: $page-background
+      border-bottom-left-radius: 10px
+
+  .receive
+    background: $receive-bg
+    color: black
+    align-self: flex-start
+    &:before
+      left: -7px
+      width: 20px
+      background-color: $receive-bg
+      border-bottom-right-radius: 16px 14px
+    &:after
+      left: -26px
+      width: 26px
+      background-color: $page-background
+      border-bottom-right-radius: 10px
+
+
+@mixin menu
+  position: absolute
+  display: none
+  background-color: green
+  border: 0.5px solid rgba(144, 144, 147, 0.5)
+  background: rgba(255, 255, 255, 0.6)
+  border-radius: 10px
+  overflow: hidden
+  width: 100px
+  li
+    padding: 10px 12px
+    border-bottom: 0.5px solid rgba(144, 144, 147, 0.5)
+  li:nth-last-child(1)
+    border: none
+
+
+
+.messageMenu
+  @include menu
+
+.messageMenuActive
+  @include menu
+  display: block
+

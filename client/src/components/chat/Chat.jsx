@@ -3,6 +3,7 @@ import arrow from '../../img/arrow-blue.svg';
 import camera from '../../img/camera.svg';
 import Input from "../input";
 import {useNavigate} from "react-router-dom";
+import Message from "../message";
 
 const Chat = () =>{
 
@@ -31,19 +32,8 @@ const Chat = () =>{
 
             <div className={s.chatContent}>
 
-                <div className={s.message}>
-                    <p>
-                        If you guys are free; we’re going to mt baldy Sunday and will be doing some training all (~8am to 1pm)
-                    </p>
-                </div>
-
-                <div className={s.message}>
-                    <img src="" alt="avatar"/>
-
-                    <p>
-                        If you guys are free; we’re going to mt baldy Sunday and will be doing some training all (~8am to 1pm)
-                    </p>
-                </div>
+                <Message own={false} text={'Привет!'}/>
+                <Message own={true} text={'Говори по Українськи!'}/>
 
             </div>
 
