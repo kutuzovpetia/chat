@@ -1,14 +1,19 @@
 import s from './chat-style.module.sass';
 import arrow from '../../img/arrow-blue.svg';
 import camera from '../../img/camera.svg';
+import Input from "../input";
+import {useNavigate} from "react-router-dom";
 
 const Chat = () =>{
 
+    const navigate = useNavigate();
+    const to = () => navigate('/');
+
     return(
-        <>
+        <div className={s.chatWrapper}>
             <div className={s.header}>
                 <div className={s.headerControls}>
-                    <button>
+                    <button onClick={to}>
                         <img src={arrow} alt="arrow"/>
                     </button>
 
@@ -24,10 +29,14 @@ const Chat = () =>{
                 <h5 className={s.userName}>Hell Boy</h5>
             </div>
 
-            <div>
+            <div className={s.chatContent}>
                 <h1>Content</h1>
             </div>
-        </>
+
+            {/*Input Message*/}
+            <Input/>
+
+        </div>
     )
 }
 
