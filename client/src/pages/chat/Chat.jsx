@@ -42,6 +42,8 @@ const Chat = () =>{
 
             </div>
 
+
+            <span className={s.status}>Tobias has notifications silenced</span>
             {/*Input Message*/}
             <Input/>
 
