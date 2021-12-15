@@ -22,8 +22,8 @@ const Rooms = () =>{
 
                 <div className={s.chatList}>
                     {
-                       Array(10).fill(null).map(() => {
-                            return <ListRoomsItem url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}/>
+                       Array(10).fill(null).map((item, i) => {
+                            return <ListRoomsItem key={i} url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}/>
                         })
                     }
                 </div>

@@ -1,26 +1,28 @@
 import s from './chat-style.module.sass';
 import arrow from '../../img/arrow-blue.svg';
 import camera from '../../img/camera.svg';
-import Input from "../input";
+import Input from "../../components/input";
 import {useNavigate} from "react-router-dom";
-import Message from "../message";
-import Avatar from '../avatar';
+import Message from "../../components/message";
+import Avatar from '../../components/avatar';
 
 const Chat = () =>{
 
     const navigate = useNavigate();
-    const to = () => navigate('/');
+    const to = (path) => navigate(path);
 
     return(
         <div className={s.chatWrapper}>
             <div className={s.header}>
                 <div className={s.headerControls}>
 
-                    <button onClick={to}>
+                    <button onClick={()=>to('/')}>
                         <img src={arrow} alt="arrow"/>
                     </button>
 
-                    <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}/>
+                    <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}
+                            handlerClick={to}
+                            to={'/user/id'}/>
 
                     <button>
                         <img src={camera} alt="arrow"/>
@@ -28,7 +30,9 @@ const Chat = () =>{
 
                 </div>
 
-                <h5 className={s.userName}>Hell Boy</h5>
+                <h5 className={s.userName} onClick={()=>to('/user/id')}>Hell Boy</h5>
+
+
             </div>
 
             <div className={s.chatContent}>
