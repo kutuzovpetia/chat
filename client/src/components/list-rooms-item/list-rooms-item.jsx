@@ -1,7 +1,8 @@
 import s from './style.module.sass';
 import {useNavigate} from "react-router-dom";
+import Avatar from '../avatar';
 
-const ListRoomsItem = ({img, userName, time, text}) =>{
+const ListRoomsItem = ({url, userName, time, text}) =>{
 
     const navigate = useNavigate();
     const to = () => navigate('/chat');
@@ -9,9 +10,9 @@ const ListRoomsItem = ({img, userName, time, text}) =>{
     return(
         <>
             <div className={s.itemWrapper} onClick={to}>
-                <div className={s.itemAvatar}>
-                    <img src="https://avochka.ru/img/kartinka/1/enot_glass.jpg" alt="avatar"/>
-                </div>
+
+                <Avatar url={url}/>
+
                 <div className={s.itemContent}>
                     <div className={s.itemContentHeader}>
                         <h3>Hell Boy</h3>

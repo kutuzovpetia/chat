@@ -3,6 +3,7 @@ import compose from '../../img/btn-compose.svg';
 import ListRoomsItem from "../list-rooms-item";
 
 const Rooms = () =>{
+
     return(
         <>
             <div className={s.messagesWrapper}>
@@ -20,18 +21,11 @@ const Rooms = () =>{
                 </div>
 
                 <div className={s.chatList}>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
-                    <ListRoomsItem/>
+                    {
+                       Array(10).fill(null).map(() => {
+                            return <ListRoomsItem url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}/>
+                        })
+                    }
                 </div>
 
             </div>

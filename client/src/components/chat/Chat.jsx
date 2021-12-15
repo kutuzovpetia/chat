@@ -4,6 +4,7 @@ import camera from '../../img/camera.svg';
 import Input from "../input";
 import {useNavigate} from "react-router-dom";
 import Message from "../message";
+import Avatar from '../avatar';
 
 const Chat = () =>{
 
@@ -14,17 +15,17 @@ const Chat = () =>{
         <div className={s.chatWrapper}>
             <div className={s.header}>
                 <div className={s.headerControls}>
+
                     <button onClick={to}>
                         <img src={arrow} alt="arrow"/>
                     </button>
 
-                    <div className={s.avatar}>
-                        <img src="https://avochka.ru/img/kartinka/1/enot_glass.jpg" alt="avatar"/>
-                    </div>
+                    <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}/>
 
                     <button>
                         <img src={camera} alt="arrow"/>
                     </button>
+
                 </div>
 
                 <h5 className={s.userName}>Hell Boy</h5>
