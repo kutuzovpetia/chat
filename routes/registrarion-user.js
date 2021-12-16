@@ -9,7 +9,6 @@ router.post('/registration', async (req, res)=>{
 
     try {
         if(candidate){
-            console.log('Пользователь уже существует')
             res.redirect('/');
         }else {
             const hashPassword = await bcrypt.hash(password, 10);
