@@ -15,7 +15,10 @@ const routerHome = require('./routes/home-route');
 const routerRegistration = require('./routes/registration-route');
 
 require('dotenv').config();
+
+app.use('/images', express.static(path.join(__dirname, 'uploads')))
 app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(express.json({extended: true}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());

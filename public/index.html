@@ -10,5 +10,14 @@
 <body>
     <h1>Хелоу фром сервер =) !!1</h1>
     <a href="/registration">Registration</a>
+
+    <form action="/registration" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" value="userName" required>
+        <input type="password" name="password" value="123456" required>
+        <input type="file" name="photo" required>
+
+        <button type="submit">Ok</button>
+    </form>
+
 </body>
 </html>
