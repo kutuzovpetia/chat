@@ -10,14 +10,14 @@ const Message = ({ own, text }) =>{
     const openMenu = () => setMenuActive(!menuActive)
 
     return(
-        <div className={s.messageWrapper}>
+        <li className={s.messageWrapper}>
             <h6 className={own ? s.send : s.receive} onClick={openMenu}>{text}</h6>
             <ul className={menuActive ? s.messageMenuActive : s.messageMenu} style={own? send : receive}>
                 <li>Like</li>
                 <li>Delete</li>
                 <li>Forward</li>
             </ul>
-        </div>
+        </li>
     )
 }
 

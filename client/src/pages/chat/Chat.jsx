@@ -7,43 +7,37 @@ import Avatar from '../../components/avatar';
 
 const Chat = () =>{
 
-
     return(
         <div className={s.chatWrapper}>
-            <div className={s.header}>
-                <div className={s.headerControls}>
-
+            <header className={s.header}>
+                <nav className={s.headerControls}>
                     <a href="/">
                         <img src={arrow} alt="arrow"/>
                     </a>
-
                     <a href="/user/id">
                         <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} size={'medium'}/>
                     </a>
-
                     <button>
                         <img src={camera} alt="arrow"/>
                     </button>
-
-                </div>
+                </nav>
 
                 <a href={'/user/id'} className={s.userName}>
                     Hell Boy
                 </a>
+            </header>
 
-            </div>
+            <section>
+                <ul className={s.chatContent}>
+                    <Message own={false} text={'Привет!'}/>
+                    <Message own={true} text={'Говори по Українськи!'}/>
+                </ul>
+            </section>
 
-            <div className={s.chatContent}>
-
-                <Message own={false} text={'Привет!'}/>
-                <Message own={true} text={'Говори по Українськи!'}/>
-
-            </div>
-
-            <span className={s.status}>Tobias has notifications silenced</span>
-            {/*Input Message*/}
-            <Input/>
-
+            <footer>
+                <div className={s.status}>Tobias has notifications silenced</div>
+                <Input/>
+            </footer>
         </div>
     )
 }

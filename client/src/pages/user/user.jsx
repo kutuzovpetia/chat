@@ -3,30 +3,30 @@ import Avatar from '../../components/avatar';
 
 const User = ({}) =>{
 
-
     return(
-        <>
-            <div className={s.userWrapper}>
+        <div className={s.userWrapper}>
 
+            <header>
                 <div className={s.userHeader}>
-
                     <a href={'/chat'}>
                         <span>Cancel</span>
                     </a>
 
                     <div className={s.userAvatar}>
                         <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} size={'large'}/>
-                        <p>Set New Photo</p>
+                        <button>Set New Photo</button>
                     </div>
 
-                    <button><span>Done</span></button>
+                    <button>Done</button>
                 </div>
+            </header>
 
+            <section>
                 <ul className={s.list}>
                     <li>Hell</li>
                     <li>Boy</li>
                 </ul>
-                <span className={s.context}>Enter your name adn add an optional profile photo</span>
+                <abbr className={s.context}>Enter your name adn add an optional profile photo</abbr>
 
                 <div className={s.details}>
                     <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium beatae corporis dicta
@@ -38,13 +38,12 @@ const User = ({}) =>{
                         saepe suscipit. Cumque, facere vero!
                     </div>
                 </div>
-                <span className={s.context}>
+                <abbr className={s.context}>
                     Any details such as age, occupation or city.
                     Example: 23 y.o. designer from San Francisco
-                </span>
-
-            </div>
-        </>
+                </abbr>
+            </section>
+        </div>
     )
 }
 

@@ -4,20 +4,20 @@ import Avatar from '../avatar';
 const ListRoomsItem = ({url, userName, time, text}) =>{
 
     return(
-            <div className={s.itemWrapper}>
+            <li className={s.itemWrapper}>
 
                 <Avatar url={url} size={'medium'}/>
 
                 <a href={'/chat'} className={s.itemContent}>
                     <div className={s.itemContentHeader}>
                         <h3>Hell Boy</h3>
-                        <span>1:20 PM</span>
+                        <time>1:20 PM</time>
                     </div>
-                    <p className={s.itemMessage}>
+                    <div className={s.itemMessage}>
                         Send me some jams, I’ve been listening to way too much bad bunny
-                    </p>
+                    </div>
                 </a>
-            </div>
+            </li>
     )
 }
 
