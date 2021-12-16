@@ -1,6 +1,6 @@
 import s from './list-rooms.module.sass';
 import compose from '../../img/btn-compose.svg';
-import ListRoomsItem from "../list-rooms-item";
+import ListRoomsItem from "../../components/list-rooms-item";
 
 const Rooms = () =>{
 

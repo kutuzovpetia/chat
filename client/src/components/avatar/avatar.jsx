@@ -1,17 +1,23 @@
 import s from './avatar.module.sass';
 
 
-const Avatar = ({url, handlerClick, to, style}) =>{
+const Avatar = ({url, size}) =>{
+
+    let styleAvatar = null;
+    switch (size){
+        case 'small': styleAvatar = s.small;
+            break;
+        case 'medium': styleAvatar = s.medium;
+            break;
+        case 'large': styleAvatar = s.large;
+            break;
+        default: styleAvatar = s.small;
+    }
 
     return(
-        <>
-            <div className={s.avatar}
-                 onClick={()=>handlerClick?.(to)}
-                 style={style}
-            >
-                <img src={url} alt="avatar"/>
-            </div>
-        </>
+        <div className={styleAvatar}>
+            <img src={url} alt="avatar"/>
+        </div>
     )
 }
 

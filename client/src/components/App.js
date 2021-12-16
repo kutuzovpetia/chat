@@ -2,7 +2,7 @@ import s from './app.module.sass';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Error404 from '../pages/404';
 import Chat from '../pages/chat';
-import Rooms from './list-rooms/list-rooms';
+import Rooms from '../pages/list-rooms/list-rooms';
 import User from '../pages/user';
 
 

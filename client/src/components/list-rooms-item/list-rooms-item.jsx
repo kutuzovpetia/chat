@@ -1,19 +1,14 @@
 import s from './style.module.sass';
-import {useNavigate} from "react-router-dom";
 import Avatar from '../avatar';
 
 const ListRoomsItem = ({url, userName, time, text}) =>{
 
-    const navigate = useNavigate();
-    const to = () => navigate('/chat');
-
     return(
-        <>
-            <div className={s.itemWrapper} onClick={to}>
+            <div className={s.itemWrapper}>
 
-                <Avatar url={url}/>
+                <Avatar url={url} size={'medium'}/>
 
-                <div className={s.itemContent}>
+                <a href={'/chat'} className={s.itemContent}>
                     <div className={s.itemContentHeader}>
                         <h3>Hell Boy</h3>
                         <span>1:20 PM</span>
@@ -21,9 +16,8 @@ const ListRoomsItem = ({url, userName, time, text}) =>{
                     <p className={s.itemMessage}>
                         Send me some jams, I’ve been listening to way too much bad bunny
                     </p>
-                </div>
+                </a>
             </div>
-        </>
     )
 }
 

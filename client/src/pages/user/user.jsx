@@ -1,24 +1,21 @@
 import s from './user.module.sass';
 import Avatar from '../../components/avatar';
-import {useNavigate} from "react-router-dom";
 
 const User = ({}) =>{
 
-    const navigate = useNavigate();
 
     return(
         <>
             <div className={s.userWrapper}>
 
                 <div className={s.userHeader}>
-                    <button onClick={()=>navigate('/chat')}>
+
+                    <a href={'/chat'}>
                         <span>Cancel</span>
-                    </button>
+                    </a>
 
                     <div className={s.userAvatar}>
-                        <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}
-                                style={{width: '100px', height: '100px'}}
-                        />
+                        <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} size={'large'}/>
                         <p>Set New Photo</p>
                     </div>
 
