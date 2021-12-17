@@ -4,6 +4,7 @@ import Error404 from '../pages/404';
 import Chat from '../pages/chat';
 import Rooms from '../pages/list-rooms/list-rooms';
 import User from '../pages/user';
+import Auth from "../pages/auth";
 
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
 
             <Routes>
                 <Route path="/" element={<Rooms/>}/>
+                <Route path="/auth" element={<Auth/>}/>
                 <Route path="/chat" element={<Chat/>}/>
                 <Route path="/user/:id" element={<User/>}/>
                 <Route path="*" element={<Error404/>}/>
