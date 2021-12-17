@@ -1,5 +1,6 @@
 import s from './user.module.sass';
 import Avatar from '../../components/avatar';
+import {Link} from 'react-router-dom'
 
 const User = ({}) =>{
 
@@ -8,12 +9,11 @@ const User = ({}) =>{
 
             <header>
                 <div className={s.userHeader}>
-                    <a href={'/chat'}>
-                        <span>Cancel</span>
-                    </a>
+
+                    <Link to="/chat">Cancel</Link>
 
                     <div className={s.userAvatar}>
-                        <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} size={'large'}/>
+                        <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} large/>
                         <button>Set New Photo</button>
                     </div>
 
@@ -26,7 +26,7 @@ const User = ({}) =>{
                     <li>Hell</li>
                     <li>Boy</li>
                 </ul>
-                <abbr className={s.context}>Enter your name adn add an optional profile photo</abbr>
+                <div className={s.context}>Enter your name adn add an optional profile photo</div>
 
                 <div className={s.details}>
                     <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium beatae corporis dicta
@@ -38,10 +38,10 @@ const User = ({}) =>{
                         saepe suscipit. Cumque, facere vero!
                     </div>
                 </div>
-                <abbr className={s.context}>
+                <div className={s.context}>
                     Any details such as age, occupation or city.
                     Example: 23 y.o. designer from San Francisco
-                </abbr>
+                </div>
             </section>
         </div>
     )

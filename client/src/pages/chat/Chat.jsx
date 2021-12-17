@@ -4,6 +4,7 @@ import camera from '../../img/camera.svg';
 import Input from "../../components/input";
 import Message from "../../components/message";
 import Avatar from '../../components/avatar';
+import {Link} from "react-router-dom";
 
 const Chat = () =>{
 
@@ -11,20 +12,20 @@ const Chat = () =>{
         <div className={s.chatWrapper}>
             <header className={s.header}>
                 <nav className={s.headerControls}>
-                    <a href="/">
+                    <Link to="/">
                         <img src={arrow} alt="arrow"/>
-                    </a>
-                    <a href="/user/id">
-                        <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} size={'medium'}/>
-                    </a>
+                    </Link>
+                    <Link to="/user/id">
+                        <Avatar url={'https://www.parisbeacon.com/wp-content/uploads/2021/11/Rocket-Raccoon-James-Gunn-Guardianes-de-la-Galaxia-Marvel-Studios.jpg'} medium/>
+                    </Link>
                     <button>
                         <img src={camera} alt="arrow"/>
                     </button>
                 </nav>
 
-                <a href={'/user/id'} className={s.userName}>
+                <Link to={'/user/id'} className={s.userName}>
                     Hell Boy
-                </a>
+                </Link>
             </header>
 
             <section>

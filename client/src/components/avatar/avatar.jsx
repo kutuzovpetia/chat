@@ -1,21 +1,17 @@
 import s from './avatar.module.sass';
+import classNames from "classnames";
 
 
-const Avatar = ({url, size}) =>{
+const Avatar = ({url, large, medium, small}) =>{
 
-    let styleAvatar = null;
-    switch (size){
-        case 'small': styleAvatar = s.small;
-            break;
-        case 'medium': styleAvatar = s.medium;
-            break;
-        case 'large': styleAvatar = s.large;
-            break;
-        default: styleAvatar = s.small;
-    }
+    const classes = classNames(
+        large ? s.large : s.small,
+        medium ? s.medium : s.small,
+        small ? s.small : s.small
+    );
 
     return(
-        <div className={styleAvatar}>
+        <div className={classes}>
             <img src={url} alt="avatar"/>
         </div>
     )
