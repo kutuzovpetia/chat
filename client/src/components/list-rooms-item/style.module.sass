@@ -7,22 +7,13 @@ $appleGray: #909093
   align-items: center
   padding: 0 0 0 20px
   margin: 5px 0 0 0
-  .itemAvatar
-    width: 45px
-    height: 45px
-    overflow: hidden
-    border-radius: 50%
-    img
-      width: 100%
-      height: 100%
-      object-fit: cover
   .itemContent
     position: relative
     width: calc(100% - 45px)
     padding: 0 12px
     &:before
       content: ''
-      width: 100%
+      width: 96%
       height: 1px
       position: absolute
       background-color: rgba(60, 60, 67, 0.2)
@@ -35,7 +26,7 @@ $appleGray: #909093
       h3
         font-size: 18px
         font-weight: 600
-      span
+      time
         font-size: 15px
         color: $appleGray
         position: relative

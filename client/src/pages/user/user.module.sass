@@ -1,0 +1,57 @@
+@mixin textStyle
+  font-size: 15px
+  color: #0078FF
+  font-weight: 500
+
+.userWrapper
+  padding: 13px 16px
+  .context
+    display: block
+    font-size: 13px
+    color: #909093
+    text-align: center
+    margin: 5px 0 0 0
+
+  .userHeader
+    display: flex
+    position: relative
+    justify-content: space-between
+    a,button
+      display: flex
+      align-items: flex-start
+      height: fit-content
+      +textStyle
+    .userAvatar
+      display: flex
+      flex-direction: column
+      align-items: center
+      padding: 13px 0
+      button
+        +textStyle
+        margin: 12px 0 30px 0
+
+  .list
+    display: block
+    border: 0.5px solid rgba(144, 144, 147, 0.5)
+    background: rgba(255, 255, 255, 0.6)
+    border-radius: 10px
+    overflow: hidden
+    width: 100%
+    padding: 0 0 0 13px
+
+    li
+      padding: 10px 0
+      border-bottom: 0.5px solid rgba(144, 144, 147, 0.5)
+    li:nth-last-child(1)
+      border: none
+
+  .details
+    display: block
+    border: 0.5px solid rgba(144, 144, 147, 0.5)
+    background: rgba(255, 255, 255, 0.6)
+    border-radius: 10px
+    overflow: hidden
+    width: 100%
+    padding: 13px
+    margin-top: 30px
+

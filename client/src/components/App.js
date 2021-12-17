@@ -1,8 +1,10 @@
 import s from './app.module.sass';
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Error404 from './404';
-import Chat from './chat';
-import Rooms from './list-rooms/list-rooms';
+import Error404 from '../pages/404';
+import Chat from '../pages/chat';
+import Rooms from '../pages/list-rooms/list-rooms';
+import User from '../pages/user';
+
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Rooms/>}/>
                 <Route path="/chat" element={<Chat/>}/>
+                <Route path="/user/:id" element={<User/>}/>
                 <Route path="*" element={<Error404/>}/>
             </Routes>
         </div>
