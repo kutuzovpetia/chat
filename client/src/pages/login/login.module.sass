@@ -1,0 +1,24 @@
+@import "src/pages/auth/auth.module"
+
+@mixin line
+  position: absolute
+  content: ""
+  width: 45%
+  height: 1px
+  background-color: #ccd0d5
+  top: 10px
+.line
+  width: 100%
+  text-align: center
+  position: relative
+  margin: 20px 0
+  span
+    &:before
+      +line
+      left: 0
+    &:after
+      +line
+      right: 0
+.link
+  background-color: #00a400
+
