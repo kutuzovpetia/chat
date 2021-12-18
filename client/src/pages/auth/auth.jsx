@@ -3,9 +3,11 @@ import * as yup from 'yup';
 import { Formik } from 'formik';
 import {useRef, useState} from "react";
 import Avatar from "../../components/avatar";
+import {useHttp} from "../../hooks/http.hook";
 
 const Auth = () => {
 
+    const {request} = useHttp();
     const inputFile = useRef(null);
     const [avatar, setAvatar] = useState('https://avochka.ru/img/kartinka/1/enot_glass.jpg');
     const values = {
@@ -27,11 +29,12 @@ const Auth = () => {
         reader.onerror = error => console.log('Error: ', error);
     };
 
-    const onSubmit = (values) => {
-        console.log(values)
+    const onSubmit = async (values) => {
+        console.log(values);
+        const result = await request('/registration', 'POST', {'Content-Type': 'application/json'}, JSON.stringify(values))
     }
 
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    // const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
 
     const validationSchema = yup.object().shape({
         firstName: yup.string().typeError('The firstname must be a string').required('First name field is required').min(3, 'Must be exactly 3 letters').max(25, 'Must be exactly 25 letters'),
