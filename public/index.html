@@ -19,5 +19,20 @@
         <button type="submit">Ok</button>
     </form>
 
+    <a href="/registration">Login</a>
+    <form action="/registration/login" method="post">
+
+        <input type="text" name="phoneOrEmail" required>
+        <input type="password" name="password" value="123456" required>
+        <button type="submit">Ok</button>
+
+    </form>
+
+    <form action="/registration/logout" method="get">
+        <button type="submit">logout</button>
+    </form>
+
+
+
 </body>
 </html>

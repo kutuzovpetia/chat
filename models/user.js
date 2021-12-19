@@ -5,7 +5,8 @@ const userSchema = new Schema({
     secondName: { type: String, required: true },
     details: { type: String, required: true },
     phoneOrEmail: { type: String, required: true },
-    password: {type: String, required: true}
+    password: {type: String, required: true},
+    imgUrl: {type: String}
 });
 
 module.exports = model('User', userSchema);
