@@ -10,7 +10,7 @@ const User = ({}) =>{
             <header>
                 <div className={s.userHeader}>
 
-                    <Link to="/chat">Cancel</Link>
+                    <Link to="/chat/id">Cancel</Link>
 
                     <div className={s.userAvatar}>
                         <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} large/>

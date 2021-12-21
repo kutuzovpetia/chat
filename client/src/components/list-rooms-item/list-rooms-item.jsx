@@ -1,24 +1,42 @@
 import s from './style.module.sass';
 import Avatar from '../avatar';
+import {useState} from "react";
 import {Link} from "react-router-dom";
+import {useLongPress, LongPressDetectEvents} from "use-long-press";
 
-const ListRoomsItem = ({url, userName, time, text}) =>{
+
+const ListRoomsItem = ({id, url, userName, time, text, cbLongTouch}) =>{
+
+    const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
+    const [enabled, setEnabled] = useState(true);
+    const bind = useLongPress(enabled ? ()=>onLongPress(id) : null, {
+        // onStart: () => console.log(""),
+        // onFinish: () => console.log(""),
+        // onCancel: () => console.log(""),
+        threshold: 350,
+        captureEvent: true,
+        cancelOnMovement: false,
+        detect: LongPressDetectEvents.BOTH
+    });
 
     return(
-            <li className={s.itemWrapper}>
 
-                <Avatar url={url} medium/>
+            <li className={s.itemWrapper} {...bind}>
 
-                <Link to={'/chat'} className={s.itemContent}>
-                    <div className={s.itemContentHeader}>
-                        <h3>Hell Boy</h3>
-                        <time>1:20 PM</time>
+                    <Avatar url={url} medium/>
+                    <div className={s.itemContent} >
+
+                        <Link to={`/chat/${id}`}>
+                            <div className={s.itemContentHeader}>
+                                <h3>{userName}</h3>
+                                <time>1:20 PM</time>
+                            </div>
+                            <div className={s.itemMessage}>{text}</div>
+                        </Link>
+
                     </div>
-                    <div className={s.itemMessage}>
-                        Send me some jams, I’ve been listening to way too much bad bunny
-                    </div>
-                </Link>
             </li>
+
     )
 }
 
