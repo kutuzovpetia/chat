@@ -5,6 +5,9 @@ import Avatar from '../../components/avatar';
 import {useState} from "react";
 import ListChat from "../../components/list-chat";
 import {Link} from "react-router-dom";
+import {useRecoilState} from 'recoil';
+import {conversation as c, anchors as a} from '../../state/atoms';
+
 
 const Rooms = () =>{
 
@@ -15,17 +18,9 @@ const Rooms = () =>{
         {id: '374567', text: 'Говори по Українськи!', own: true}
     ];
 
-    const c = [
-        {id: '001', text: 'Send me some jams, I’ve been listening to way too much bad bunny', userName: 'Hell Boy'},
-        {id: '002', text: 'Send me some jams, I’ve been listening to way too much bad bunny', userName: 'User 2'},
-        {id: '003', text: 'Send me some jams, I’ve been listening to way too much bad bunny', userName: 'User 3'},
-        {id: '004', text: 'Send me some jams, I’ve been listening to way too much bad bunny', userName: 'User 4'}
-    ];
-
-
     const [menuOpen, setMenuOpen] = useState(false);
-    const [anchors, setAnchors] = useState([]);
-    const [conversation, setConversation] = useState(c);
+    const [conversation, setConversation] = useRecoilState(c);
+    const [anchors, setAnchors] = useRecoilState(a)
 
     const handlerInAnchor = (id) => {
         setAnchors([...anchors, conversation.find(c => c.id === id)])
