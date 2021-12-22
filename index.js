@@ -13,6 +13,8 @@ require('dotenv').config();
 
 const routerAuth = require('./routes/auth');
 const routerChat = require('./routes/chat');
+const routerConversation = require('./routes/conversation');
+const routerMessages = require('./routes/messages');
 
 
 app.use('/images', express.static(path.join(__dirname, 'uploads')))
@@ -27,6 +29,8 @@ app.use(cors());
 // Routes ********************************
 app.use('/auth', routerAuth);
 app.use('/chat', routerChat);
+app.use('/conversation', routerConversation);
+app.use('/message', routerMessages);
 
 
 // Sockets IO ****************************
