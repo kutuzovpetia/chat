@@ -72,7 +72,7 @@ const Rooms = () =>{
                                                 id={item.id}
                                                 url={'https://upload.wikimedia.org/wikipedia/commons/0/0d/SBandera.jpg'}
                                                 large
-                                                userName={'Бандера'}
+                                                userName={item.userName}
                                                 newMessage
                                                 cbLongTouch={handlerOutAnchor}
                                             />
