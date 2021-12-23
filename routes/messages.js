@@ -48,7 +48,7 @@ router.get('/liked/remove/:userId/:messageId',  async (req, res)=>{
     const {userId, messageId} = req.params;
     try{
         let message = await Message.findById(messageId);
-        message.liked = message.liked.find(item => item !== userId);
+        message.liked = message.liked.filter(item => item !== userId);
         await message.save();
         res.status(200).json(message);
     }catch (err){
