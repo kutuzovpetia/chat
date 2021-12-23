@@ -1,8 +1,6 @@
 const {Router} = require('express');
 const router = Router();
 const Conversation = require('../models/conversation');
-const User = require('../models/user');
-
 
 router.post('/add',  async (req, res)=>{
     const conversation = new Conversation({
@@ -31,13 +29,13 @@ router.get('/:userId',  async (req, res)=>{
 });
 
 //Add to Favorites
-router.post('/favorite/add/:userId/:conversationId', async (req, res)=>{
+router.get('/favorite/add/:userId/:conversationId', async (req, res)=>{
 
     const {userId, conversationId} = req.params;
     try{
-        const conversation = await Conversation.find({_id: conversationId});
-        conversation[0].favorite.push(userId);
-        await conversation[0].save();
+        const conversation = await Conversation.findById(conversationId);
+        conversation.favorite.push(userId);
+        await conversation.save();
         res.status(200).json(conversation);
     }catch (err){
         res.status(500).json(err)
@@ -45,13 +43,13 @@ router.post('/favorite/add/:userId/:conversationId', async (req, res)=>{
 })
 
 //Remove from Favorites
-router.post('/favorite/remove/:userId/:conversationId', async (req, res)=>{
+router.get('/favorite/remove/:userId/:conversationId', async (req, res)=>{
 
     const {userId, conversationId} = req.params;
     try{
-        let conversation = await Conversation.find({_id: conversationId});
-        conversation[0].favorite = conversation[0].favorite.filter(item => item !== userId);
-        await conversation[0].save();
+        let conversation = await Conversation.findById(conversationId);
+        conversation.favorite = conversation.favorite.filter(item => item !== userId);
+        await conversation.save();
         res.status(200).json(conversation);
     }catch (err){
         res.status(500).json(err)

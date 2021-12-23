@@ -11,6 +11,10 @@ const MessageSchema = new Schema(
         text:{
             type: String,
         },
+        liked:{
+            type: Array,
+            default: []
+        }
     },
     { timestamps: true }
 );
