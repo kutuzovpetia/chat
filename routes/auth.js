@@ -17,12 +17,12 @@ const storage = multer.diskStorage({
 
 fileMiddleware = multer({storage: storage});
 
-router.post('/registration', fileMiddleware.single('photo'), [
-        check('firstName','Not empty').notEmpty(),
-        check('password','4 - 10 symbol').isLength({min: 4, max: 10}),
-    ], controller.registration);
+router.post('/registration', fileMiddleware.array('photo', 1),
+    [check('firstName','Not empty').notEmpty(), check('password','4 - 10 symbol').isLength({min: 4, max: 10})]
+    , controller.registration);
 
 router.post('/login', controller.login);
+router.get('/auth', authMiddleware, controller.auth);
 router.get('/users', authMiddleware, controller.getUsers);
 
 module.exports = router;

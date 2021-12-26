@@ -2,13 +2,11 @@ import s from './login.module.sass';
 import {Formik} from "formik";
 import {Link} from 'react-router-dom';
 import classNames from "classnames";
-import {validationSchema} from "../../validation/validationSchema";
+import {loginValidationSchema} from "../../validation/validationSchema";
 import {useHttp} from "../../hooks/http.hook";
-
+import axios from "axios";
 
 const Login = () =>{
-
-    const {request} = useHttp();
 
     const values = {
         phoneOrEmail: '',
@@ -16,8 +14,14 @@ const Login = () =>{
     }
 
     const onSubmit = async (values) => {
-        console.log(values);
-        const result = await request('/login', 'POST', {'Content-Type': 'application/json'}, JSON.stringify(values))
+
+        await axios.post('/auth/login', values)
+        .then((res)=>{
+            localStorage.setItem('token', res.data.token)
+            window.location.reload();
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     return(
@@ -29,7 +33,7 @@ const Login = () =>{
             <Formik initialValues={values}
                     validateOnBlur
                     onSubmit={onSubmit}
-                    validationSchema={validationSchema}
+                    validationSchema={loginValidationSchema}
             >
                 {
                     ({values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty})=>(
@@ -69,7 +73,7 @@ const Login = () =>{
                                 <span>or</span>
                             </div>
 
-                            <Link to={'/auth'} className={classNames(s.btn, s.link)}>
+                            <Link to={'/registration'} className={classNames(s.btn, s.link)}>
                                     Create new account
                             </Link>
                         </section>

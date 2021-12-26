@@ -12,33 +12,36 @@ const cookieParser                   = require('cookie-parser');
 require('dotenv').config();
 
 const routerAuth = require('./routes/auth');
-const routerChat = require('./routes/chat');
 const routerConversation = require('./routes/conversation');
 const routerMessages = require('./routes/messages');
-
 
 app.use('/images', express.static(path.join(__dirname, 'uploads')))
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({extended: true}));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 app.use(cookieParser());
 app.use(cors());
 
 // Routes ********************************
 app.use('/auth', routerAuth);
-app.use('/chat', routerChat);
 app.use('/conversation', routerConversation);
 app.use('/message', routerMessages);
-
 
 // Sockets IO ****************************
 let users = [];
 io.on('connection', function (socket) {
     console.log(`a user connected: ${socket.id}`);
 
+    socket.on("logIn", (user) => {
+        user.socketId = socket.id;
+        users.push(user);
+        io.emit('getUsers', users)
+    });
+
     socket.on('disconnect', () => {
+        users = users.filter(u => u.socketId !== socket.id);
+        io.emit('getUsers', users)
         console.log('user disconnected');
     });
 });
@@ -48,7 +51,7 @@ io.on('connection', function (socket) {
     await mongoose.connect(process.env.URL, {useNewUrlParser: true, useUnifiedTopology: true})
         .then(()=>{
             console.log(`MongoDB is connected ...`);
-            app.listen(process.env.PORT, ()=>{
+            server.listen(process.env.PORT, ()=>{
                 console.log(`Server is started in ${process.env.PORT}!`);
             })
         }).catch(err=>{

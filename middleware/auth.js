@@ -15,7 +15,6 @@ module.exports = function (req, res, next){
         req.user = decodedData;
         next();
     }catch (err){
-        console.log(err);
         return res.status(400).json({message: 'User not logged in'})
     }
 }

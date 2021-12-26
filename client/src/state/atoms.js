@@ -7,6 +7,15 @@ const c = [
     {id: '004', text: 'Send me some jams, I’ve been listening to way too much bad bunny', userName: 'User 4'}
 ];
 
+export const isLogged = atom({
+    key: 'isLogged',
+    default: false
+})
+
+export const user = atom({
+    key: 'user',
+    default: {}
+})
 
 export const anchors = atom({
     key: 'anchors',

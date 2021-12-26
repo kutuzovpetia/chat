@@ -1,32 +1,58 @@
 import s from './app.module.sass';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
-import Error404 from '../pages/404';
+import { Routes, Route} from 'react-router-dom';
 import Chat from '../pages/chat';
 import Rooms from '../pages/list-rooms/list-rooms';
 import User from '../pages/user';
-import Auth from "../pages/auth";
+import Registration from "../pages/registration";
 import Login from '../pages/login';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useRecoilState} from 'recoil';
+import {user, isLogged as logged} from '../state/atoms';
+import axios from "axios";
 
 
 function App() {
-    const [isLogged, setIsLogged] = useState(true);
+    const [isLogged, setIsLogged] = useRecoilState(logged);
+    const [currentUser, setCurrentUser] = useRecoilState(user);
+
+
+    useEffect(()=>{
+
+        (async function (){
+            try {
+                const response = await axios.get(`/auth/auth`,
+                    {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
+                )
+                setCurrentUser(response.data.user);
+                setIsLogged(true);
+                localStorage.setItem('token', response.data.token)
+                console.log(response.data.user)
+
+
+            } catch (e) {
+                localStorage.removeItem('token')
+            }
+        })();
+    },[])
+
 
     return (
-    <Router>
+
         <div className={s.app}>
 
             <Routes>
-                {isLogged && <Route path="/rooms" element={<Rooms/>}/>}
+
+                <Route path="/" element={isLogged ? <Rooms/> : <Login/>}/>
+
                 {isLogged && <Route path="/chat/:id" element={<Chat/>}/>}
                 {isLogged && <Route path="/user/:id" element={<User/>}/>}
+                {!isLogged && <Route path="/registration" element={<Registration/>}/>}
 
-                <Route path="/" element={<Login/>}/>
-                <Route path="/auth" element={<Auth/>}/>
-                <Route path="*" element={<Error404/>}/>
+                <Route path="*" element={ isLogged ? <Rooms/> : <Login/>}/>
+
             </Routes>
         </div>
-    </Router>
+
     );
 }
 

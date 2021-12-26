@@ -2,25 +2,21 @@ import s from './list-rooms.module.sass';
 import compose from '../../img/btn-compose.svg';
 import ListRoomsItem from "../../components/list-rooms-item";
 import Avatar from '../../components/avatar';
-import {useState} from "react";
-import ListChat from "../../components/list-chat";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useRecoilState} from 'recoil';
-import {conversation as c, anchors as a} from '../../state/atoms';
+import {conversation as c, anchors as a, user, isLogged as logged} from '../../state/atoms';
+import {useEffect} from "react";
+import {io} from 'socket.io-client';
 
+const socket = io();
 
 const Rooms = () =>{
 
-    const testMessages = [
-        {id: '150', text: 'Привет', own: false},
-        {id: 'gsdf', text: 'Говори по Українськи!', own: true},
-        {id: '2345', text: 'Привет', own: false},
-        {id: '374567', text: 'Говори по Українськи!', own: true}
-    ];
-
-    const [menuOpen, setMenuOpen] = useState(false);
+    const navigate = useNavigate();
     const [conversation, setConversation] = useRecoilState(c);
-    const [anchors, setAnchors] = useRecoilState(a)
+    const [anchors, setAnchors] = useRecoilState(a);
+    const [currentUser, setCurrentUser] = useRecoilState(user);
+    const [isLogged, setIsLogged] = useRecoilState(logged);
 
     const handlerInAnchor = (id) => {
         setAnchors([...anchors, conversation.find(c => c.id === id)])
@@ -32,7 +28,20 @@ const Rooms = () =>{
         setAnchors(anchors.filter(c => c.id !== id))
     }
 
-    const handlerMenu = () => setMenuOpen(!menuOpen);
+    useEffect(()=>{
+        socket.emit('logIn', currentUser);
+        socket.on('getUsers', (users)=>{
+            console.log(users)
+        })
+    },[])
+
+    const logOut = () => {
+        socket.disconnect();
+        navigate('/');
+        setCurrentUser({});
+        setIsLogged(false);
+        localStorage.removeItem('token');
+    }
 
     return(
         <>
@@ -42,6 +51,10 @@ const Rooms = () =>{
                     <h1>Messages</h1>
                     <button>
                         <img src={compose} alt="icon"/>
+                    </button>
+
+                    <button className={s.btnLogOut} onClick={logOut}>
+                        Log Out
                     </button>
                 </div>
                 <div className={s.inputSearch}>
@@ -55,12 +68,6 @@ const Rooms = () =>{
                     {
                         anchors.map((item, i)=>{
                             return  <li key={i}>
-
-                                        { menuOpen &&
-                                            <div className={s.menu} onClick={handlerMenu}>
-                                                <ListChat messages={testMessages}/>
-                                            </div>
-                                        }
 
                                         <Link to={`/chat/${item.id}`}>
                                             <Avatar
@@ -78,7 +85,7 @@ const Rooms = () =>{
 
                 </ul>
                 {
-                    conversation.map((item, i) => {
+                    conversation.map((item) => {
 
                         return <ListRoomsItem
                                     key={item.id}

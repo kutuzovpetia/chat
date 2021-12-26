@@ -1,18 +1,18 @@
 import s from './auth.module.sass';
-import * as yup from 'yup';
 import { Formik } from 'formik';
 import {useRef, useState} from "react";
 import Avatar from "../../components/avatar";
-import {useHttp} from "../../hooks/http.hook";
 import {validationSchema} from "../../validation/validationSchema";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 
-const Auth = () => {
+const Registration = () => {
 
-
-    const {request} = useHttp();
+    const navigate = useNavigate();
     const inputFile = useRef(null);
     const [avatar, setAvatar] = useState('https://avochka.ru/img/kartinka/1/enot_glass.jpg');
+    const [imageFile, setImageFile] = useState(null);
     const values = {
         firstName: '',
         secondName: '',
@@ -30,11 +30,22 @@ const Auth = () => {
         reader.readAsDataURL(file);
         reader.onload = () => setAvatar(reader.result);
         reader.onerror = error => console.log('Error: ', error);
+        setImageFile(e.target.files[0])
     };
 
     const onSubmit = async (values) => {
-        console.log(values);
-        const result = await request('/registration', 'POST', {'Content-Type': 'application/json'}, JSON.stringify(values))
+
+        const bodyFormData = new FormData();
+
+        for (let key in values) bodyFormData.append(key, values[key]);
+        bodyFormData.append("photo", imageFile)
+
+        await axios.post('/auth/registration', bodyFormData, )
+        .then(res => {
+            if(res.status == 200) {
+                navigate('/');
+            }
+        })
     }
 
     return(
@@ -50,7 +61,7 @@ const Auth = () => {
                         validationSchema={validationSchema}
                 >
                     {
-                        ({values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty, setFieldValue})=>(
+                        ({values, errors, touched, handleChange, handleBlur, isValid, handleSubmit, dirty})=>(
 
                             <>
                                 <label htmlFor={"firstName"}>
@@ -128,7 +139,6 @@ const Auth = () => {
                                 <input
                                     onChange={(e)=>{
                                         handleFileUpload(e)
-                                        setFieldValue("file", e.currentTarget.files[0]);
                                     }}
                                     ref={inputFile}
                                     name='avatar'
@@ -161,4 +171,4 @@ const Auth = () => {
     )
 }
 
-export default Auth;
+export default Registration;
