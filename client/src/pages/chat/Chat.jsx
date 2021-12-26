@@ -24,7 +24,7 @@ const Chat = () =>{
         <div className={s.chatWrapper}>
             <header className={s.header}>
                 <nav className={s.headerControls}>
-                    <Link to="/rooms">
+                    <Link to="/">
                         <img src={arrow} alt="arrow"/>
                     </Link>
                     <Link to={`/user/${id}`}>

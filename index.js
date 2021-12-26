@@ -34,9 +34,12 @@ io.on('connection', function (socket) {
     console.log(`a user connected: ${socket.id}`);
 
     socket.on("logIn", (user) => {
-        user.socketId = socket.id;
-        users.push(user);
-        io.emit('getUsers', users)
+        addUser(user, socket);
+    });
+
+    socket.on("getUser", (id) => {
+        const user = users.find(u => u._id === id);
+        socket.emit("getUser", user);
     });
 
     socket.on('disconnect', () => {
@@ -58,3 +61,14 @@ io.on('connection', function (socket) {
             console.log(err)
         });
 })()
+
+function addUser(user, socket){
+    const candidate = users.find(u => u._id === user._id);
+    if(candidate){
+        io.emit('getUsers', users)
+    }else {
+        user.socketId = socket.id;
+        users.push(user);
+        io.emit('getUsers', users)
+    }
+}

@@ -9,7 +9,9 @@ import {useEffect, useState} from "react";
 import {useRecoilState} from 'recoil';
 import {user, isLogged as logged} from '../state/atoms';
 import axios from "axios";
+import {io} from "socket.io-client";
 
+const socket = io();
 
 function App() {
     const [isLogged, setIsLogged] = useRecoilState(logged);
@@ -33,7 +35,7 @@ function App() {
                 localStorage.removeItem('token')
             }
         })();
-    },[])
+    },[setIsLogged, setCurrentUser])
 
 
     return (
@@ -42,10 +44,10 @@ function App() {
 
             <Routes>
 
-                <Route path="/" element={isLogged ? <Rooms/> : <Login/>}/>
+                <Route path="/" element={isLogged ? <Rooms socket={socket}/> : <Login/>}/>
 
-                {isLogged && <Route path="/chat/:id" element={<Chat/>}/>}
-                {isLogged && <Route path="/user/:id" element={<User/>}/>}
+                {isLogged && <Route path="/chat/:id" element={<Chat socket={socket}/>}/>}
+                {isLogged && <Route path="/user/:id" element={<User socket={socket}/>}/>}
                 {!isLogged && <Route path="/registration" element={<Registration/>}/>}
 
                 <Route path="*" element={ isLogged ? <Rooms/> : <Login/>}/>

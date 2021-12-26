@@ -10,9 +10,6 @@ const ListRoomsItem = ({id, url, userName, time, text, cbLongTouch}) =>{
     const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
     const [enabled, setEnabled] = useState(true);
     const bind = useLongPress(enabled ? ()=>onLongPress(id) : null, {
-        // onStart: () => console.log(""),
-        // onFinish: () => console.log(""),
-        // onCancel: () => console.log(""),
         threshold: 350,
         captureEvent: true,
         cancelOnMovement: false,

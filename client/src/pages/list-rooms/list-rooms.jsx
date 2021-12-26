@@ -5,18 +5,20 @@ import Avatar from '../../components/avatar';
 import {Link, useNavigate} from "react-router-dom";
 import {useRecoilState} from 'recoil';
 import {conversation as c, anchors as a, user, isLogged as logged} from '../../state/atoms';
-import {useEffect} from "react";
-import {io} from 'socket.io-client';
+import {useEffect, useState} from "react";
+// import {io} from 'socket.io-client';
 
-const socket = io();
 
-const Rooms = () =>{
+
+const Rooms = ({socket}) =>{
 
     const navigate = useNavigate();
     const [conversation, setConversation] = useRecoilState(c);
     const [anchors, setAnchors] = useRecoilState(a);
     const [currentUser, setCurrentUser] = useRecoilState(user);
     const [isLogged, setIsLogged] = useRecoilState(logged);
+
+    const [users, setUsers] = useState([]);
 
     const handlerInAnchor = (id) => {
         setAnchors([...anchors, conversation.find(c => c.id === id)])
@@ -28,12 +30,13 @@ const Rooms = () =>{
         setAnchors(anchors.filter(c => c.id !== id))
     }
 
+
     useEffect(()=>{
-        socket.emit('logIn', currentUser);
-        socket.on('getUsers', (users)=>{
-            console.log(users)
+        socket?.emit('logIn', currentUser);
+        socket?.on('getUsers', (users)=>{
+            setUsers(users)
         })
-    },[])
+    },[currentUser, socket])
 
     const logOut = () => {
         socket.disconnect();
@@ -84,17 +87,32 @@ const Rooms = () =>{
                     }
 
                 </ul>
-                {
-                    conversation.map((item) => {
+                {/*{*/}
+                {/*    conversation.map((item) => {*/}
 
-                        return <ListRoomsItem
-                                    key={item.id}
-                                    id={item.id}
-                                    url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}
-                                    text={item.text}
-                                    userName={item.userName}
-                                    cbLongTouch={handlerInAnchor}
-                                />
+                {/*        return <ListRoomsItem*/}
+                {/*                    key={item.id}*/}
+                {/*                    id={item.id}*/}
+                {/*                    url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}*/}
+                {/*                    text={item.text}*/}
+                {/*                    userName={item.userName}*/}
+                {/*                    cbLongTouch={handlerInAnchor}*/}
+                {/*                />*/}
+                {/*    })*/}
+                {/*}*/}
+
+                {
+                    users.map((u) => {
+                        if(u._id !== currentUser._id){
+                            return <ListRoomsItem
+                                key={u._id}
+                                id={u._id}
+                                url={`https://avochka.ru/img/kartinka/1/enot_glass.jpg`}
+                                text={'Some text'}
+                                userName={u.firstName}
+                                cbLongTouch={handlerInAnchor}
+                            />
+                        }
                     })
                 }
             </ul>
