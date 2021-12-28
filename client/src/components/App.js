@@ -5,17 +5,25 @@ import Rooms from '../pages/list-rooms/list-rooms';
 import User from '../pages/user';
 import Registration from "../pages/registration";
 import Login from '../pages/login';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRecoilState} from 'recoil';
 import {user, isLogged as logged} from '../state/atoms';
 import axios from "axios";
 import {io} from "socket.io-client";
+import Modal from "./modal";
+import DataService from "../dataService";
+
 
 const socket = io();
+const dataService = new DataService();
 
 function App() {
+
+
     const [isLogged, setIsLogged] = useRecoilState(logged);
     const [currentUser, setCurrentUser] = useRecoilState(user);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const toogleModal = () => setIsModalOpen(!isModalOpen);
 
 
     useEffect(()=>{
@@ -28,8 +36,6 @@ function App() {
                 setCurrentUser(response.data.user);
                 setIsLogged(true);
                 localStorage.setItem('token', response.data.token)
-                console.log(response.data.user)
-
 
             } catch (e) {
                 localStorage.removeItem('token')
@@ -37,14 +43,15 @@ function App() {
         })();
     },[setIsLogged, setCurrentUser])
 
-
     return (
 
         <div className={s.app}>
 
+            { isModalOpen && <Modal onClose={toogleModal} content={<div>ModalContent</div>}/> }
+
             <Routes>
 
-                <Route path="/" element={isLogged ? <Rooms socket={socket}/> : <Login/>}/>
+                <Route path="/" element={isLogged ? <Rooms socket={socket} toggleModal={toogleModal} dataService={dataService}/> : <Login/>}/>
 
                 {isLogged && <Route path="/chat/:id" element={<Chat socket={socket}/>}/>}
                 {isLogged && <Route path="/user/:id" element={<User socket={socket}/>}/>}
@@ -53,8 +60,8 @@ function App() {
                 <Route path="*" element={ isLogged ? <Rooms/> : <Login/>}/>
 
             </Routes>
-        </div>
 
+        </div>
     );
 }
 

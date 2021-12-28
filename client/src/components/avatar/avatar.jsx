@@ -14,10 +14,7 @@ const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouc
     const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
 
     const [enabled, setEnabled] = useState(true);
-    const bind = useLongPress(enabled ? ()=>onLongPress(id) : null, {
-        // onStart: () => console.log(''),
-        // onFinish: () => console.log(''),
-        // onCancel: () => console.log(''),
+    const bind = useLongPress(enabled ? ()=> onLongPress(id) : null, {
         threshold: 350,
         captureEvent: true,
         cancelOnMovement: false,

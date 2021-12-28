@@ -1,15 +1,28 @@
 import s from './style.module.sass';
 import Avatar from '../avatar';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {useLongPress, LongPressDetectEvents} from "use-long-press";
+import DataService from "../../dataService";
 
 
-const ListRoomsItem = ({id, url, userName, time, text, cbLongTouch}) =>{
+const ListRoomsItem = ({conversation, currentUser, cbLongTouch}) =>{
+
+    const dataService = new DataService();
+    const {members} = conversation;
+    const id = members.find(u => u !== currentUser._id);
+    const [user, setUser] = useState({});
+
+    useEffect(()=>{
+        (async function (){
+            const user = await dataService.getUserById(id)
+            setUser(user);
+        })()
+    },[])
 
     const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
     const [enabled, setEnabled] = useState(true);
-    const bind = useLongPress(enabled ? ()=>onLongPress(id) : null, {
+    const bind = useLongPress(enabled ? () => onLongPress(conversation._id) : null, {
         threshold: 350,
         captureEvent: true,
         cancelOnMovement: false,
@@ -20,15 +33,15 @@ const ListRoomsItem = ({id, url, userName, time, text, cbLongTouch}) =>{
 
             <li className={s.itemWrapper} {...bind}>
 
-                    <Avatar url={url} medium/>
+                    <Avatar url={user.imgUrl} medium/>
                     <div className={s.itemContent} >
 
-                        <Link to={`/chat/${id}`}>
+                        <Link to={`/chat/${user._id}`}>
                             <div className={s.itemContentHeader}>
-                                <h3>{userName}</h3>
+                                <h3>{`${user.firstName} ${user.secondName}`}</h3>
                                 <time>1:20 PM</time>
                             </div>
-                            <div className={s.itemMessage}>{text}</div>
+                            <div className={s.itemMessage}>{'TEXT'}</div>
                         </Link>
 
                     </div>

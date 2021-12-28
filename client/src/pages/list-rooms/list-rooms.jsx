@@ -7,10 +7,12 @@ import {useRecoilState} from 'recoil';
 import {conversation as c, anchors as a, user, isLogged as logged} from '../../state/atoms';
 import {useEffect, useState} from "react";
 // import {io} from 'socket.io-client';
+import DataService from "../../dataService";
+import AnchorItem from "../../components/anchor-item";
 
+const dataService = new DataService();
 
-
-const Rooms = ({socket}) =>{
+const Rooms = ({socket, toggleModal}) =>{
 
     const navigate = useNavigate();
     const [conversation, setConversation] = useRecoilState(c);
@@ -20,23 +22,29 @@ const Rooms = ({socket}) =>{
 
     const [users, setUsers] = useState([]);
 
-    const handlerInAnchor = (id) => {
-        setAnchors([...anchors, conversation.find(c => c.id === id)])
-        setConversation(conversation.filter(c => c.id !== id))
+    const handlerInAnchor = async (id) => {
+        await dataService.addConversationToFavorite(currentUser._id, id);
+        setAnchors([...anchors, conversation.find(c => c._id === id)])
+        setConversation(conversation.filter(c => c._id !== id))
     }
 
-    const handlerOutAnchor = (id) => {
-        setConversation([...conversation, anchors.find(c => c.id === id)])
-        setAnchors(anchors.filter(c => c.id !== id))
+    const handlerOutAnchor = async (id) => {
+        await dataService.removeConversationFromFavorite(currentUser._id, id);
+        setConversation([...conversation, anchors.find(c => c._id === id)])
+        setAnchors(anchors.filter(c => c._id !== id))
     }
-
 
     useEffect(()=>{
-        socket?.emit('logIn', currentUser);
-        socket?.on('getUsers', (users)=>{
-            setUsers(users)
-        })
-    },[currentUser, socket])
+
+        (async function (){
+            const result = await dataService.getConversations(currentUser._id);
+            const inConversation = result.filter(c => !c.favorite.includes(currentUser._id));
+            const inAnchors = result.filter(c => c.favorite.includes(currentUser._id))
+            setConversation(inConversation);
+            setAnchors(inAnchors);
+        })()
+
+    },[])
 
     const logOut = () => {
         socket.disconnect();
@@ -52,7 +60,7 @@ const Rooms = ({socket}) =>{
                 <div className={s.headerControls}>
                     <button className={s.buttonEdit}>Edit</button>
                     <h1>Messages</h1>
-                    <button>
+                    <button onClick={toggleModal}>
                         <img src={compose} alt="icon"/>
                     </button>
 
@@ -69,52 +77,68 @@ const Rooms = ({socket}) =>{
 
                 <ul className={s.anchorsWrapper}>
                     {
-                        anchors.map((item, i)=>{
-                            return  <li key={i}>
+                        anchors.map((item)=>{
 
-                                        <Link to={`/chat/${item.id}`}>
-                                            <Avatar
-                                                id={item.id}
-                                                url={'https://upload.wikimedia.org/wikipedia/commons/0/0d/SBandera.jpg'}
-                                                large
-                                                userName={item.userName}
-                                                newMessage
-                                                cbLongTouch={handlerOutAnchor}
-                                            />
-                                        </Link>
-                                    </li>
+                                return  <li key={item._id}>
+                                            <Link to={`/chat/${item._id}`}>
+
+                                                <AnchorItem
+                                                    anchor={item}
+                                                    cbLongTouch={handlerOutAnchor}
+                                                    currentUser={currentUser}
+                                                />
+                                                {/*<Avatar*/}
+                                                {/*    id={item._id}*/}
+                                                {/*    url={'https://upload.wikimedia.org/wikipedia/commons/0/0d/SBandera.jpg'}*/}
+                                                {/*    large*/}
+                                                {/*    userName={item.firstName}*/}
+                                                {/*    newMessage*/}
+                                                {/*    cbLongTouch={handlerOutAnchor}*/}
+                                                {/*/>*/}
+
+                                            </Link>
+                                        </li>
+
                         })
                     }
 
                 </ul>
-                {/*{*/}
-                {/*    conversation.map((item) => {*/}
-
-                {/*        return <ListRoomsItem*/}
-                {/*                    key={item.id}*/}
-                {/*                    id={item.id}*/}
-                {/*                    url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}*/}
-                {/*                    text={item.text}*/}
-                {/*                    userName={item.userName}*/}
-                {/*                    cbLongTouch={handlerInAnchor}*/}
-                {/*                />*/}
-                {/*    })*/}
-                {/*}*/}
-
                 {
-                    users.map((u) => {
-                        if(u._id !== currentUser._id){
-                            return <ListRoomsItem
-                                key={u._id}
-                                id={u._id}
-                                url={`https://avochka.ru/img/kartinka/1/enot_glass.jpg`}
-                                text={'Some text'}
-                                userName={u.firstName}
-                                cbLongTouch={handlerInAnchor}
-                            />
-                        }
+                    conversation.map((item) => {
+
+                        // return <ListRoomsItem
+                        //             key={item._id}
+                        //             id={item._id}
+                        //             url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}
+                        //             text={item.text}
+                        //             userName={item.userName}
+                        //             cbLongTouch={handlerInAnchor}
+                        //         />
+
+                        return <ListRoomsItem
+                            key={item._id}
+                            conversation={item}
+                            currentUser={currentUser}
+                            cbLongTouch={handlerInAnchor}
+                        />
+
                     })
                 }
+
+                {/*{*/}
+                {/*    users.map((u) => {*/}
+                {/*        if(u._id !== currentUser._id){*/}
+                {/*            return <ListRoomsItem*/}
+                {/*                key={u._id}*/}
+                {/*                id={u._id}*/}
+                {/*                url={`https://avochka.ru/img/kartinka/1/enot_glass.jpg`}*/}
+                {/*                text={'Some text'}*/}
+                {/*                userName={u.firstName}*/}
+                {/*                cbLongTouch={handlerInAnchor}*/}
+                {/*            />*/}
+                {/*        }*/}
+                {/*    })*/}
+                {/*}*/}
             </ul>
         </>
     )
