@@ -1,12 +1,11 @@
 import s from './list-rooms.module.sass';
 import compose from '../../img/btn-compose.svg';
 import ListRoomsItem from "../../components/list-rooms-item";
-import Avatar from '../../components/avatar';
+// import Avatar from '../../components/avatar';
 import {Link, useNavigate} from "react-router-dom";
 import {useRecoilState} from 'recoil';
-import {conversation as c, anchors as a, user, isLogged as logged} from '../../state/atoms';
-import {useEffect, useState} from "react";
-// import {io} from 'socket.io-client';
+import { conversation as c, anchors as a, user, isLogged as logged, usersOnline as online} from '../../state/atoms';
+import {useEffect} from "react";
 import DataService from "../../dataService";
 import AnchorItem from "../../components/anchor-item";
 
@@ -18,9 +17,10 @@ const Rooms = ({socket, toggleModal}) =>{
     const [conversation, setConversation] = useRecoilState(c);
     const [anchors, setAnchors] = useRecoilState(a);
     const [currentUser, setCurrentUser] = useRecoilState(user);
-    const [isLogged, setIsLogged] = useRecoilState(logged);
+    const [, setIsLogged] = useRecoilState(logged);
+    const [, setUsersOnline] = useRecoilState(online);
 
-    const [users, setUsers] = useState([]);
+    // const [users, setUsers] = useState([]);
 
     const handlerInAnchor = async (id) => {
         await dataService.addConversationToFavorite(currentUser._id, id);
@@ -38,13 +38,14 @@ const Rooms = ({socket, toggleModal}) =>{
 
         (async function (){
             const result = await dataService.getConversations(currentUser._id);
+            console.log(result)
             const inConversation = result.filter(c => !c.favorite.includes(currentUser._id));
             const inAnchors = result.filter(c => c.favorite.includes(currentUser._id))
             setConversation(inConversation);
             setAnchors(inAnchors);
         })()
 
-    },[])
+    },[currentUser._id, setAnchors, setConversation])
 
     const logOut = () => {
         socket.disconnect();
@@ -52,6 +53,7 @@ const Rooms = ({socket, toggleModal}) =>{
         setCurrentUser({});
         setIsLogged(false);
         localStorage.removeItem('token');
+        socket.on('getUsers', users => setUsersOnline(users))
     }
 
     return(
@@ -78,67 +80,32 @@ const Rooms = ({socket, toggleModal}) =>{
                 <ul className={s.anchorsWrapper}>
                     {
                         anchors.map((item)=>{
-
-                                return  <li key={item._id}>
-                                            <Link to={`/chat/${item._id}`}>
-
-                                                <AnchorItem
-                                                    anchor={item}
-                                                    cbLongTouch={handlerOutAnchor}
-                                                    currentUser={currentUser}
-                                                />
-                                                {/*<Avatar*/}
-                                                {/*    id={item._id}*/}
-                                                {/*    url={'https://upload.wikimedia.org/wikipedia/commons/0/0d/SBandera.jpg'}*/}
-                                                {/*    large*/}
-                                                {/*    userName={item.firstName}*/}
-                                                {/*    newMessage*/}
-                                                {/*    cbLongTouch={handlerOutAnchor}*/}
-                                                {/*/>*/}
-
-                                            </Link>
-                                        </li>
+                            return  <li key={item._id}>
+                                        <Link to={`/chat/${item._id}`}>
+                                            <AnchorItem
+                                                anchor={item}
+                                                cbLongTouch={handlerOutAnchor}
+                                                currentUser={currentUser}
+                                            />
+                                        </Link>
+                                    </li>
 
                         })
                     }
-
                 </ul>
                 {
                     conversation.map((item) => {
-
-                        // return <ListRoomsItem
-                        //             key={item._id}
-                        //             id={item._id}
-                        //             url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'}
-                        //             text={item.text}
-                        //             userName={item.userName}
-                        //             cbLongTouch={handlerInAnchor}
-                        //         />
-
-                        return <ListRoomsItem
-                            key={item._id}
-                            conversation={item}
-                            currentUser={currentUser}
-                            cbLongTouch={handlerInAnchor}
-                        />
-
+                        return <Link to={`/chat/${item._id}`} key={item._id}>
+                                    <ListRoomsItem
+                                        conversation={item}
+                                        currentUser={currentUser}
+                                        cbLongTouch={handlerInAnchor}
+                                        socket={socket}
+                                    />
+                                </Link>
                     })
                 }
 
-                {/*{*/}
-                {/*    users.map((u) => {*/}
-                {/*        if(u._id !== currentUser._id){*/}
-                {/*            return <ListRoomsItem*/}
-                {/*                key={u._id}*/}
-                {/*                id={u._id}*/}
-                {/*                url={`https://avochka.ru/img/kartinka/1/enot_glass.jpg`}*/}
-                {/*                text={'Some text'}*/}
-                {/*                userName={u.firstName}*/}
-                {/*                cbLongTouch={handlerInAnchor}*/}
-                {/*            />*/}
-                {/*        }*/}
-                {/*    })*/}
-                {/*}*/}
             </ul>
         </>
     )

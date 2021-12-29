@@ -37,10 +37,15 @@ io.on('connection', function (socket) {
         addUser(user, socket);
     });
 
+    socket.on("getUsers", () => {
+        socket.emit("getUsers", users);
+    });
+
     socket.on("getUser", (id) => {
         const user = users.find(u => u._id === id);
         socket.emit("getUser", user);
     });
+
 
     socket.on('disconnect', () => {
         users = users.filter(u => u.socketId !== socket.id);

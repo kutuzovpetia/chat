@@ -5,20 +5,39 @@ import Input from "../../components/input";
 import Avatar from '../../components/avatar';
 import {Link, useParams} from "react-router-dom";
 import ListChat from "../../components/list-chat";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import DataService from "../../dataService";
+import axios from "axios";
+import {useRecoilState} from 'recoil';
+import {user as u} from '../../state/atoms';
 
 const Chat = () =>{
+
+    const [currentUser] = useRecoilState(u)
+
 
     const testMessages = [
         {id: 1, text: 'Привет', own: false},
         {id: 2, text: 'Говори по Українськи!', own: true}
     ]
 
+    const [user, setUser] = useState({});
+
     let { id } = useParams(); // Conversation ID
 
     useEffect(()=>{
-        // GET Conversation
-    })
+
+        (async function(){
+
+            const conversation = await axios.get(`/conversation/getOne/${id}`)
+            const companionId = conversation.data.members.find(u => u !== currentUser._id);
+            console.log(companionId)
+            const user = await axios.get(`/auth/user/${companionId}`);
+            setUser(user.data);
+
+        })()
+
+    },[])
 
     return(
         <div className={s.chatWrapper}>
@@ -28,7 +47,10 @@ const Chat = () =>{
                         <img src={arrow} alt="arrow"/>
                     </Link>
                     <Link to={`/user/${id}`}>
-                        <Avatar url={'https://www.parisbeacon.com/wp-content/uploads/2021/11/Rocket-Raccoon-James-Gunn-Guardianes-de-la-Galaxia-Marvel-Studios.jpg'} medium/>
+                        <Avatar url={user.imgUrl}
+                                medium
+                                user={user}
+                        />
                     </Link>
                     <button>
                         <img src={camera} alt="arrow"/>
@@ -36,14 +58,14 @@ const Chat = () =>{
                 </nav>
 
                 <Link to={`/user/${id}`} className={s.userName}>
-                    Hell Boy
+                    {user.firstName}
                 </Link>
             </header>
 
             <ListChat messages={testMessages}/>
 
             <footer>
-                <div className={s.status}>Tobias has notifications silenced</div>
+                {/*<div className={s.status}>Tobias has notifications silenced</div>*/}
                 <Input/>
             </footer>
         </div>

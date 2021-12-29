@@ -2,6 +2,15 @@ const {Router} = require('express');
 const router = Router();
 const Conversation = require('../models/conversation');
 
+router.get('/getOne/:id',  async (req, res)=>{
+    try{
+        const conversation = await Conversation.findById(req.params.id)
+        res.status(200).json(conversation)
+    }catch (err){
+        res.status(500).json(err)
+    }
+});
+
 router.post('/add',  async (req, res)=>{
     const conversation = new Conversation({
         members: [req.body.senderId, req.body.receiverId]

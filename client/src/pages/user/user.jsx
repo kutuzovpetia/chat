@@ -17,7 +17,7 @@ const User = () =>{
                     setUser(res.data)
                 })
         })()
-    }, [])
+    }, [id])
 
     return(
         <div className={s.userWrapper}>

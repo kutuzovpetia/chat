@@ -7,7 +7,7 @@ import Registration from "../pages/registration";
 import Login from '../pages/login';
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from 'recoil';
-import {user, isLogged as logged} from '../state/atoms';
+import {user, isLogged as logged, usersOnline as online} from '../state/atoms';
 import axios from "axios";
 import {io} from "socket.io-client";
 import Modal from "./modal";
@@ -19,9 +19,9 @@ const dataService = new DataService();
 
 function App() {
 
-
+    const [, setUsersOnline] = useRecoilState(online);
     const [isLogged, setIsLogged] = useRecoilState(logged);
-    const [currentUser, setCurrentUser] = useRecoilState(user);
+    const [, setCurrentUser] = useRecoilState(user);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toogleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -35,13 +35,19 @@ function App() {
                 )
                 setCurrentUser(response.data.user);
                 setIsLogged(true);
-                localStorage.setItem('token', response.data.token)
+                localStorage.setItem('token', response.data.token);
+                socket.emit('logIn', response.data.user);
 
+                socket.emit('getUsers');
+                socket.on('getUsers', users => {
+                    setUsersOnline(users)
+                })
             } catch (e) {
                 localStorage.removeItem('token')
             }
         })();
-    },[setIsLogged, setCurrentUser])
+    },[setIsLogged, setCurrentUser, setUsersOnline])
+
 
     return (
 

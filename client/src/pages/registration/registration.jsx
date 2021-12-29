@@ -42,7 +42,7 @@ const Registration = () => {
 
         await axios.post('/auth/registration', bodyFormData, )
         .then(res => {
-            if(res.status == 200) {
+            if(res.status === 200) {
                 navigate('/');
             }
         })

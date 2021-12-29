@@ -3,7 +3,15 @@ import classNames from "classnames";
 import {LongPressDetectEvents, useLongPress} from "use-long-press";
 import {useState} from "react";
 
-const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouch}) =>{
+import {useRecoilState} from 'recoil';
+import { usersOnline as uo } from "../../state/atoms";
+
+
+
+const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouch, user}) =>{
+
+    const [usersOnline,] = useRecoilState(uo);
+    const online = usersOnline.some(u => u._id === user?._id)
 
     const classes = classNames(
         large ? s.large : s.small,
@@ -11,9 +19,14 @@ const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouc
         small ? s.small : s.small
     );
 
+    const classesOnline = classNames(
+        large && classNames(online ? s.onlineStatusLarge : s.offlineStatusLarge),
+        medium && classNames(online ? s.onlineStatusMedium : s.offlineStatusMedium)
+    );
+
     const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
 
-    const [enabled, setEnabled] = useState(true);
+    const [enabled,] = useState(true);
     const bind = useLongPress(enabled ? ()=> onLongPress(id) : null, {
         threshold: 350,
         captureEvent: true,
@@ -22,9 +35,10 @@ const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouc
     });
 
     return(
-        <div {...bind}>
+        <div className={s.avatarWrapper} {...bind}>
 
             <img  src={url} alt="avatar" className={classes}/>
+            <div className={classesOnline}></div>
 
             {
                 userName &&
