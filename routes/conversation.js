@@ -4,7 +4,7 @@ const Conversation = require('../models/conversation');
 
 router.get('/getOne/:id',  async (req, res)=>{
     try{
-        const conversation = await Conversation.findById(req.params.id)
+        const conversation = await Conversation.findById(req.params.id).populate('members');
         res.status(200).json(conversation)
     }catch (err){
         res.status(500).json(err)
@@ -12,9 +12,13 @@ router.get('/getOne/:id',  async (req, res)=>{
 });
 
 router.post('/add',  async (req, res)=>{
+
+
     const conversation = new Conversation({
         members: [req.body.senderId, req.body.receiverId]
     });
+
+    console.log(conversation)
 
     try{
         const savedConversation = await conversation.save();
@@ -29,7 +33,7 @@ router.get('/:userId',  async (req, res)=>{
     try{
         const conversation = await Conversation.find({
             members: {$in: [req.params.userId]},
-        })
+        }).populate('members')
         res.status(200).json(conversation)
 
     }catch (err){

@@ -3,22 +3,24 @@ import Avatar from '../avatar';
 import {useEffect, useState} from "react";
 import {useLongPress, LongPressDetectEvents} from "use-long-press";
 import DataService from "../../dataService";
-
+import axios from "axios";
+import ta from 'time-ago';
 
 
 const ListRoomsItem = ({conversation, currentUser, cbLongTouch, socket}) =>{
 
     const {members} = conversation;
-    const id = members.find(u => u !== currentUser._id);
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(members.find(u => u._id !== currentUser._id));
+    const [lastMessage, setLastMessage] = useState('');
+    const [timeLastMessage, setTimeLastMessage] = useState('');
 
     useEffect(()=>{
-        const dataService = new DataService();
-        (async function (){
-            const user = await dataService.getUserById(id)
-            setUser(user);
+        (async function(){
+            const m = await axios.get(`/message/${conversation._id}`);
+            setLastMessage(m.data[m.data.length-1]?.text);
+            setTimeLastMessage(ta.ago(m.data[m.data.length-1]?.createdAt))
         })()
-    },[id])
+    },[])
 
 
     const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
@@ -39,9 +41,9 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, socket}) =>{
                     <div className={s.itemContent} >
                         <div className={s.itemContentHeader}>
                             <h3>{`${user.firstName} ${user.secondName}`}</h3>
-                            <time>1:20 PM</time>
+                            <time>{timeLastMessage}</time>
                         </div>
-                        <div className={s.itemMessage}>{'TEXT'}</div>
+                        <div className={s.itemMessage}>{lastMessage}</div>
                     </div>
             </li>
 

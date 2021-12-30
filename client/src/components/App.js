@@ -25,7 +25,6 @@ function App() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const toogleModal = () => setIsModalOpen(!isModalOpen);
 
-
     useEffect(()=>{
 
         (async function (){
@@ -60,7 +59,7 @@ function App() {
                 <Route path="/" element={isLogged ? <Rooms socket={socket} toggleModal={toogleModal} dataService={dataService}/> : <Login/>}/>
 
                 {isLogged && <Route path="/chat/:id" element={<Chat socket={socket}/>}/>}
-                {isLogged && <Route path="/user/:id" element={<User socket={socket}/>}/>}
+                {isLogged && <Route path="/user/:id/:prevPage" element={<User socket={socket}/>}/>}
                 {!isLogged && <Route path="/registration" element={<Registration/>}/>}
 
                 <Route path="*" element={ isLogged ? <Rooms/> : <Login/>}/>

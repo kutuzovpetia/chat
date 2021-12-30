@@ -1,9 +1,13 @@
 const {Schema, model} = require('mongoose');
 
 const ConversationSchema = new Schema({
-        members:{
-            type: Array,
-        },
+        members: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+                required: true,
+            }
+        ],
         favorite:{
             type: Array,
             default: []

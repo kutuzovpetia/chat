@@ -6,7 +6,6 @@ import Avatar from '../../components/avatar';
 import {Link, useParams} from "react-router-dom";
 import ListChat from "../../components/list-chat";
 import {useEffect, useState} from "react";
-import DataService from "../../dataService";
 import axios from "axios";
 import {useRecoilState} from 'recoil';
 import {user as u} from '../../state/atoms';
@@ -15,28 +14,23 @@ const Chat = () =>{
 
     const [currentUser] = useRecoilState(u)
 
-
-    const testMessages = [
-        {id: 1, text: 'Привет', own: false},
-        {id: 2, text: 'Говори по Українськи!', own: true}
-    ]
-
+    const [messages, setMessages] = useState([]);
     const [user, setUser] = useState({});
-
     let { id } = useParams(); // Conversation ID
 
     useEffect(()=>{
-
         (async function(){
-
             const conversation = await axios.get(`/conversation/getOne/${id}`)
-            const companionId = conversation.data.members.find(u => u !== currentUser._id);
-            console.log(companionId)
-            const user = await axios.get(`/auth/user/${companionId}`);
-            setUser(user.data);
-
+            const companionId = conversation.data.members.find(u => u._id !== currentUser._id);
+            setUser(companionId);
         })()
+    },[])
 
+    useEffect(()=>{
+        (async function(){
+            const m = await axios.get(`/message/${id}`);
+            setMessages(m.data);
+        })()
     },[])
 
     return(
@@ -46,7 +40,7 @@ const Chat = () =>{
                     <Link to="/">
                         <img src={arrow} alt="arrow"/>
                     </Link>
-                    <Link to={`/user/${id}`}>
+                    <Link to={`/user/${user._id}/${id}`}>
                         <Avatar url={user.imgUrl}
                                 medium
                                 user={user}
@@ -57,16 +51,15 @@ const Chat = () =>{
                     </button>
                 </nav>
 
-                <Link to={`/user/${id}`} className={s.userName}>
+                <Link to={`/user/${user._id}/${id}`} className={s.userName}>
                     {user.firstName}
                 </Link>
             </header>
 
-            <ListChat messages={testMessages}/>
+            <ListChat messages={messages} currentUser={currentUser}/>
 
             <footer>
-                {/*<div className={s.status}>Tobias has notifications silenced</div>*/}
-                <Input/>
+                <Input conversationId={id} sender={currentUser._id}/>
             </footer>
         </div>
     )

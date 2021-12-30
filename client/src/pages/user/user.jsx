@@ -6,9 +6,8 @@ import axios from "axios";
 
 const User = () =>{
 
-    const params = useParams();
     const [user, setUser] = useState({});
-    const {id} = useParams();
+    const {id, prevPage} = useParams();
 
     useEffect(()=>{
         (async function(){
@@ -25,10 +24,10 @@ const User = () =>{
             <header>
                 <div className={s.userHeader}>
 
-                    <Link to={`/chat/${params.id}`}>Cancel</Link>
+                    <Link to={`/chat/${prevPage}`}>Cancel</Link>
 
                     <div className={s.userAvatar}>
-                        <Avatar url={'https://avochka.ru/img/kartinka/1/enot_glass.jpg'} large/>
+                        <Avatar url={user.imgUrl} large/>
                         <button>Set New Photo</button>
                     </div>
 
@@ -47,7 +46,6 @@ const User = () =>{
                 <div className={s.details}>
                     { user?.details}
                 </div>
-
 
                 <div className={s.context}>
                     Any details such as age, occupation or city.

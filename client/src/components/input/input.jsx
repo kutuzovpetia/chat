@@ -1,13 +1,22 @@
 import {useState} from "react";
 import s from './input.module.sass';
 import send from "../../img/send.svg";
+import DataService from "../../dataService";
 
-const Input = () =>{
+const Input = ({conversationId, sender}) =>{
 
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState('');
 
-    const onInput = (e) => setMessage(e.target.value)
-    const onSend = () => alert('Send Message!')
+    const onInput = (e) => setMessage(e.target.value);
+    const onSend =  async () => {
+        const dataService = new DataService();
+            await dataService.sendMessage({
+            conversationId,
+            sender,
+            text: message
+        })
+        setMessage('');
+    }
 
     return(
         <div className={s.inputWrapper}>

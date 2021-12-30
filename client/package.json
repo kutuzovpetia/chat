@@ -16,6 +16,7 @@
     "react-scripts": "4.0.3",
     "recoil": "^0.5.2",
     "socket.io-client": "^4.4.0",
+    "time-ago": "^0.2.1",
     "use-long-press": "^1.1.2",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.11"

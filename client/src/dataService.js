@@ -40,4 +40,12 @@ export default class DataService{
         return user;
     }
 
+
+    // Message ***************************************************************
+
+    async sendMessage(body){
+        const message = await this.getData(`/message/add`, `POST`, body);
+        return message;
+    }
+
 }

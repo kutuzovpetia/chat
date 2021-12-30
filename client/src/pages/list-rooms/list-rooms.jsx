@@ -5,7 +5,7 @@ import ListRoomsItem from "../../components/list-rooms-item";
 import {Link, useNavigate} from "react-router-dom";
 import {useRecoilState} from 'recoil';
 import { conversation as c, anchors as a, user, isLogged as logged, usersOnline as online} from '../../state/atoms';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import DataService from "../../dataService";
 import AnchorItem from "../../components/anchor-item";
 
@@ -20,7 +20,9 @@ const Rooms = ({socket, toggleModal}) =>{
     const [, setIsLogged] = useRecoilState(logged);
     const [, setUsersOnline] = useRecoilState(online);
 
-    // const [users, setUsers] = useState([]);
+
+    const [filterValue, setFilterValue] = useState('');
+    const onFilter = (e) => setFilterValue(e.target.value);
 
     const handlerInAnchor = async (id) => {
         await dataService.addConversationToFavorite(currentUser._id, id);
@@ -38,7 +40,7 @@ const Rooms = ({socket, toggleModal}) =>{
 
         (async function (){
             const result = await dataService.getConversations(currentUser._id);
-            console.log(result)
+            // console.log(result)
             const inConversation = result.filter(c => !c.favorite.includes(currentUser._id));
             const inAnchors = result.filter(c => c.favorite.includes(currentUser._id))
             setConversation(inConversation);
@@ -71,7 +73,7 @@ const Rooms = ({socket, toggleModal}) =>{
                     </button>
                 </div>
                 <div className={s.inputSearch}>
-                    <input type="text" placeholder={'Search'}/>
+                    <input type="text" placeholder={'Search'} value={filterValue} onChange={onFilter}/>
                 </div>
             </header>
 
@@ -94,7 +96,15 @@ const Rooms = ({socket, toggleModal}) =>{
                     }
                 </ul>
                 {
-                    conversation.map((item) => {
+                    conversation.filter((val)=>{
+
+                        if(filterValue == ""){
+                            return val
+                        }
+                        // }else if (val.firstName.toLowerCase().includes(filterValue.toLowerCase())){
+                        //     console.log(val)
+                        // }
+                    }).map((item) => {
                         return <Link to={`/chat/${item._id}`} key={item._id}>
                                     <ListRoomsItem
                                         conversation={item}

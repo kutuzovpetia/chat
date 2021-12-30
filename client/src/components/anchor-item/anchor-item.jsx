@@ -5,18 +5,8 @@ import DataService from "../../dataService";
 
 const AnchorItem = ({cbLongTouch, anchor, currentUser}) =>{
 
-    const id = anchor.members.find(u => u !== currentUser._id )
-    const [user, setUser] = useState({});
 
-    useEffect(()=>{
-        const dataService = new DataService();
-        (async function (){
-            const user = await dataService.getUserById(id);
-            setUser(user)
-            console.log(user)
-        })()
-
-    },[id])
+    const [user, setUser] = useState(anchor.members.find(u => u._id !== currentUser._id));
 
     return(
         <div>
