@@ -22,6 +22,7 @@ const Rooms = ({socket, toggleModal}) =>{
 
 
     const [filterValue, setFilterValue] = useState('');
+
     const onFilter = (e) => setFilterValue(e.target.value);
 
     const handlerInAnchor = async (id) => {
@@ -73,7 +74,7 @@ const Rooms = ({socket, toggleModal}) =>{
                     </button>
                 </div>
                 <div className={s.inputSearch}>
-                    <input type="text" placeholder={'Search'} value={filterValue} onChange={onFilter}/>
+                    <input type="text" placeholder={'Search'} onChange={onFilter}/>
                 </div>
             </header>
 
@@ -98,22 +99,19 @@ const Rooms = ({socket, toggleModal}) =>{
                 {
                     conversation.filter((val)=>{
 
-                        if(filterValue == ""){
-                            return val
-                        }
-                        // }else if (val.firstName.toLowerCase().includes(filterValue.toLowerCase())){
-                        //     console.log(val)
-                        // }
-                    }).map((item) => {
-                        return <Link to={`/chat/${item._id}`} key={item._id}>
-                                    <ListRoomsItem
-                                        conversation={item}
-                                        currentUser={currentUser}
-                                        cbLongTouch={handlerInAnchor}
-                                        socket={socket}
-                                    />
-                                </Link>
-                    })
+                        if(filterValue == ""){ return val }
+                        else if (val.members[1].firstName.toLowerCase().includes(filterValue.toLowerCase())){ return val}
+
+                        }).map((item) => {
+                            return <Link to={`/chat/${item._id}`} key={item._id}>
+                                        <ListRoomsItem
+                                            conversation={item}
+                                            currentUser={currentUser}
+                                            cbLongTouch={handlerInAnchor}
+                                            socket={socket}
+                                        />
+                                    </Link>
+                        })
                 }
 
             </ul>
