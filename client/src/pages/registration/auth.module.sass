@@ -8,7 +8,6 @@
   align-items: center
   font-size: 16px
 
-
 label
   color: #606770
   font-size: 13px
@@ -51,7 +50,11 @@ textarea
 section
   padding: 12px 8px
   height: calc(100vh - 45px)
-  overflow-y: scroll
+  overflow-y: auto
+  width: 500px
+  margin: 0 auto
+  @media screen and (max-width: 500px)
+    width: 100%
 .avatar
   display: flex
   flex-direction: column

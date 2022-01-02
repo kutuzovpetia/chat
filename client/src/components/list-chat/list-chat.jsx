@@ -5,7 +5,7 @@ import Message from "../message";
 const ListChat = ({messages, currentUser}) =>{
 
     return(
-        <section>
+        <div className={s.wrapper}>
             <ul className={s.chatContent}>
                 {
                     messages && messages.map(m => {
@@ -13,7 +13,7 @@ const ListChat = ({messages, currentUser}) =>{
                     })
                 }
             </ul>
-        </section>
+        </div>
     )
 }
 
