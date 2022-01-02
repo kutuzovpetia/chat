@@ -7,11 +7,13 @@ import Registration from "../pages/registration";
 import Login from '../pages/login';
 import React, {useEffect, useState} from "react";
 import {useRecoilState} from 'recoil';
-import {user, isLogged as logged, usersOnline as online} from '../state/atoms';
+import {user, isLogged as logged, usersOnline as online, isModalOpen as m} from '../state/atoms';
 import axios from "axios";
 import {io} from "socket.io-client";
 import Modal from "./modal";
 import DataService from "../dataService";
+import NewMessage from "./new-message";
+
 
 
 const socket = io();
@@ -22,12 +24,15 @@ function App() {
     const [, setUsersOnline] = useRecoilState(online);
     const [isLogged, setIsLogged] = useRecoilState(logged);
     const [, setCurrentUser] = useRecoilState(user);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useRecoilState(m);
     const toogleModal = () => setIsModalOpen(!isModalOpen);
+
 
     useEffect(()=>{
 
+
         (async function (){
+
             try {
                 const response = await axios.get(`/auth/auth`,
                     {headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
@@ -36,7 +41,6 @@ function App() {
                 setIsLogged(true);
                 localStorage.setItem('token', response.data.token);
                 socket.emit('logIn', response.data.user);
-
                 socket.emit('getUsers');
                 socket.on('getUsers', users => {
                     setUsersOnline(users)
@@ -52,7 +56,10 @@ function App() {
 
         <div className={s.app}>
 
-            { isModalOpen && <Modal onClose={toogleModal} content={<div>ModalContent</div>}/> }
+            {
+                isModalOpen && <Modal content={<NewMessage onClose={toogleModal}/>}/>
+            }
+
 
             <Routes>
 

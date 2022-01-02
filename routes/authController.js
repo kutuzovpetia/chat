@@ -87,6 +87,15 @@ class authController{
         }
     }
 
+    async getUsers(req, res){
+        try{
+            const users = await User.find();
+            res.json(users)
+        }   catch (err){
+            throw err
+        }
+    }
+
     async getUser(req, res){
         try{
             const user = await User.findById(req.params.id);

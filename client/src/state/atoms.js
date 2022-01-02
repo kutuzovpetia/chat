@@ -1,5 +1,14 @@
 import {atom} from 'recoil';
 
+export const messages = atom({
+    key: 'messages',
+    default: []
+})
+
+export const isModalOpen = atom({
+    key: 'isModalOpen',
+    default: false
+})
 
 export const usersOnline = atom({
     key: 'usersOnline',

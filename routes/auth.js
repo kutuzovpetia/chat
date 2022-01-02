@@ -24,5 +24,7 @@ router.post('/registration', fileMiddleware.array('photo', 1),
 router.post('/login', controller.login);
 router.get('/auth', authMiddleware, controller.auth);
 router.get('/user/:id', controller.getUser);
+router.get('/users', controller.getUsers);
+
 
 module.exports = router;

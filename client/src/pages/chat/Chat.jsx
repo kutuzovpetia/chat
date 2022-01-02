@@ -8,15 +8,17 @@ import ListChat from "../../components/list-chat";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useRecoilState} from 'recoil';
-import {user as u} from '../../state/atoms';
+import {user as u, messages as m} from '../../state/atoms';
 
-const Chat = () =>{
+const Chat = ({socket}) =>{
 
     const [currentUser] = useRecoilState(u)
-
-    const [messages, setMessages] = useState([]);
+    const [currentMessages, setCurrentMessages] = useRecoilState(m);
+    // const [messages, setMessages] = useState([]);
     const [user, setUser] = useState({});
     let { id } = useParams(); // Conversation ID
+
+console.log(user)
 
     useEffect(()=>{
         (async function(){
@@ -29,9 +31,22 @@ const Chat = () =>{
     useEffect(()=>{
         (async function(){
             const m = await axios.get(`/message/${id}`);
-            setMessages(m.data);
+            setCurrentMessages(m.data);
+            // setMessages(m.data);
         })()
     },[])
+
+
+    useEffect(()=>{
+        socket.on('getMessage', ({message, receiverId}) =>{
+            console.log(receiverId)
+            if (id === message.conversationId){
+                setCurrentMessages([...currentMessages, message])
+            }
+        })
+
+    }, [currentMessages])
+
 
     return(
         <div className={s.chatWrapper}>
@@ -47,7 +62,7 @@ const Chat = () =>{
                         />
                     </Link>
                     <button>
-                        <img src={camera} alt="arrow"/>
+                        {/*<img src={camera} alt="arrow"/>*/}
                     </button>
                 </nav>
 
@@ -56,10 +71,15 @@ const Chat = () =>{
                 </Link>
             </header>
 
-            <ListChat messages={messages} currentUser={currentUser}/>
+            <ListChat messages={currentMessages} currentUser={currentUser}/>
 
             <footer>
-                <Input conversationId={id} sender={currentUser._id}/>
+                <Input conversationId={id}
+                       sender={currentUser._id}
+                       socket={socket}
+                       setCurrentMessages={setCurrentMessages}
+                       currentMessages={currentMessages}
+                />
             </footer>
         </div>
     )

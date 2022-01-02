@@ -46,6 +46,21 @@ io.on('connection', function (socket) {
         socket.emit("getUser", user);
     });
 
+    socket.on("sendMessage", ({ message, receiverId})=>{
+        const s = getUser(message.sender);
+        const r = getUser(receiverId);
+
+        // if(s && r){
+        //     io.to(s.socketId).to(r.socketId).emit("getMessage", {message, receiverId})
+        // }else {
+        //     io.to(s.socketId).emit("getMessage", {message, receiverId})
+        // }
+
+
+        io.to(r.socketId).emit("getMessage", {message, receiverId})
+
+
+    });
 
     socket.on('disconnect', () => {
         users = users.filter(u => u.socketId !== socket.id);
@@ -66,6 +81,10 @@ io.on('connection', function (socket) {
             console.log(err)
         });
 })()
+
+function getUser(userId){
+    return users.find(user => user._id === userId)
+}
 
 function addUser(user, socket){
     const candidate = users.find(u => u._id === user._id);

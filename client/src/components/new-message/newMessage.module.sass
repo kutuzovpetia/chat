@@ -1,0 +1,55 @@
+.newMessage
+  height: 100%
+  background-color: white
+  header
+    position: relative
+    display: flex
+    background-color: #F5F5F3
+    height: 77px
+    align-items: center
+    h1
+      font-weight: 600
+      font-size: 16px
+      width: 100%
+      margin: 23px auto 35px auto
+      text-align: center
+    & button
+      font-size: 16px
+      font-weight: 400
+      color: #3478F6
+      position: absolute
+      top: 23px
+      right: 16px
+
+  .inputTo
+    position: relative
+    width: 100%
+    display: flex
+    height: 47px
+    & input
+      width: 100%
+      height: 100%
+      border-radius: 0
+      padding: 0 40px
+      color: #3478F6
+    & button
+      position: absolute
+      right: 16px
+      top: 12px
+    &:before
+      content: "To: "
+      position: absolute
+      top: 14px
+      left: 16px
+      color: #909093
+      font-size: 14px
+  .content
+    width: 100%
+    height: calc(100vh - 124px)
+    padding-bottom: 190px
+  footer
+    width: 100%
+    position: absolute
+    bottom: 0
+
+

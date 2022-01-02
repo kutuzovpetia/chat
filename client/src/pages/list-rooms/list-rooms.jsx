@@ -41,7 +41,6 @@ const Rooms = ({socket, toggleModal}) =>{
 
         (async function (){
             const result = await dataService.getConversations(currentUser._id);
-            // console.log(result)
             const inConversation = result.filter(c => !c.favorite.includes(currentUser._id));
             const inAnchors = result.filter(c => c.favorite.includes(currentUser._id))
             setConversation(inConversation);

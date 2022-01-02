@@ -40,6 +40,10 @@ export default class DataService{
         return user;
     }
 
+    async getAllUsers(){
+        const users = await this.getData(`/auth/users`);
+        return users;
+    }
 
     // Message ***************************************************************
 
