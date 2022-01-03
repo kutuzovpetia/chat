@@ -4,6 +4,8 @@ import Input from '../input/input';
 import ContactItem from "../contact-item";
 import {useEffect, useState} from "react";
 import DataService from "../../dataService";
+import {useRecoilState} from 'recoil';
+import {user} from '../../state/atoms';
 
 
 const NewMessage = ({onClose}) =>{
@@ -13,6 +15,7 @@ const NewMessage = ({onClose}) =>{
     const [contacts, setContacts] = useState([]);
     const [selectedContact, setSelectedContact] = useState(null);
     const [filterValue, setFilterValue] = useState('');
+    const [currentUser,] = useRecoilState(user);
 
 
     useEffect(()=>{
@@ -49,7 +52,9 @@ const NewMessage = ({onClose}) =>{
                             if(filterValue === ""){ return val }
                             else if (val.firstName.toLowerCase().includes(filterValue.toLowerCase())){ return val}
                         }).map((c) => {
-                            return <ContactItem key={c._id} contact={c} setSelectedContact={setSelectedContact}/>
+                            if(currentUser._id !== c._id){
+                                return <ContactItem key={c._id} contact={c} setSelectedContact={setSelectedContact}/>
+                            }
                         })
                     }
                 </ul>

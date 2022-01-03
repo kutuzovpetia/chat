@@ -4,14 +4,16 @@ import {useEffect, useState} from "react";
 import {useLongPress, LongPressDetectEvents} from "use-long-press";
 import axios from "axios";
 import ta from 'time-ago';
+import {Link} from "react-router-dom";
 
 
-const ListRoomsItem = ({conversation, currentUser, cbLongTouch, socket}) =>{
+const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversation, setSelectedConversation, deletingMode}) =>{
 
     const {members} = conversation;
     const [user,] = useState(members.find(u => u._id !== currentUser._id));
     const [lastMessage, setLastMessage] = useState('');
     const [timeLastMessage, setTimeLastMessage] = useState('');
+
 
     useEffect(()=>{
         (async function(){
@@ -19,6 +21,7 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, socket}) =>{
             setLastMessage(m.data[m.data.length-1]?.text);
             setTimeLastMessage(ta.ago(m.data[m.data.length-1]?.createdAt))
         })()
+
     },[conversation._id])
 
 
@@ -31,12 +34,30 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, socket}) =>{
         detect: LongPressDetectEvents.BOTH
     });
 
+
+    // console.log(selectedConversation)
+
+    const onChecked = (e) =>{
+        e.target.checked ?
+        setSelectedConversation((prev)=>[...prev, conversation._id]) :
+        setSelectedConversation( selectedConversation.filter(id => id !== conversation._id))
+    }
+
     return(
 
             <li className={s.itemWrapper} >
 
-                    <Avatar url={user.imgUrl} medium user={user}/>
+                {
+                    deletingMode &&
+                    <input type="checkbox"
+                           className={s.customControl}
+                           onChange={onChecked}
+                    />
+                }
 
+                <Avatar url={user.imgUrl} medium user={user}/>
+
+                <Link to={`/chat/${conversation._id}`}>
                     <div className={s.itemContent} {...bind}>
                         <div className={s.itemContentHeader}>
                             <h3>{`${user.firstName} ${user.secondName}`}</h3>
@@ -44,6 +65,8 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, socket}) =>{
                         </div>
                         <div className={s.itemMessage}>{lastMessage}</div>
                     </div>
+                </Link>
+
             </li>
 
     )

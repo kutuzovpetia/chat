@@ -16,7 +16,7 @@ import NewMessage from "./new-message";
 
 
 
-const socket = io();
+let socket;
 const dataService = new DataService();
 
 function App() {
@@ -29,8 +29,7 @@ function App() {
 
 
     useEffect(()=>{
-
-
+        socket = io();
         (async function (){
 
             try {
@@ -59,7 +58,6 @@ function App() {
             {
                 isModalOpen && <Modal content={<NewMessage onClose={toogleModal}/>}/>
             }
-
 
             <Routes>
 

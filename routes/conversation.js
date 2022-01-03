@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const Conversation = require('../models/conversation');
+const Message = require('../models/message');
 
 router.get('/getOne/:id',  async (req, res)=>{
     try{
@@ -13,17 +14,13 @@ router.get('/getOne/:id',  async (req, res)=>{
 
 router.post('/add',  async (req, res)=>{
 
-
     const conversation = new Conversation({
         members: [req.body.senderId, req.body.receiverId]
     });
 
-    console.log(conversation)
-
     try{
         const savedConversation = await conversation.save();
         res.status(200).json(savedConversation)
-
     }catch (err){
         res.status(500).json(err)
     }
@@ -68,5 +65,34 @@ router.get('/favorite/remove/:userId/:conversationId', async (req, res)=>{
         res.status(500).json(err)
     }
 })
+
+//Remove conversation
+router.delete('/remove', async (req, res)=>{
+
+    try {
+        const conversationDeleted = await Conversation.deleteMany({
+            _id: {
+                $in: req.body
+            }
+        })
+
+        const messagesDeleted = await Message.deleteMany({
+            conversationId: {
+                $in: req.body
+            }
+        })
+
+        // console.log("Conversation: ", res)
+        // console.log("Messages: ", m)
+        res.status(200).json({conversationDeleted, messagesDeleted})
+
+    }catch (err){
+        res.status(500).json(err)
+    }
+
+
+
+})
+
 
 module.exports = router;
