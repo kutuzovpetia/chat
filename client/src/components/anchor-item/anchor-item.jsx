@@ -1,12 +1,11 @@
 import Avatar from "../avatar";
-import {useEffect, useState} from "react";
-import DataService from "../../dataService";
+import {useState} from "react";
 
 
 const AnchorItem = ({cbLongTouch, anchor, currentUser}) =>{
 
 
-    const [user, setUser] = useState(anchor.members.find(u => u._id !== currentUser._id));
+    const [user,] = useState(anchor.members.find(u => u._id !== currentUser._id));
 
     return(
         <div>

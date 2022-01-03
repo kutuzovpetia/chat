@@ -10,7 +10,7 @@ const Input = ({conversationId, sender, selectedContact, socket, setCurrentMessa
 
     const dataService = new DataService();
     const [message, setMessage] = useState('');
-    const [currentUser, setCurrentUser] = useRecoilState(user);
+    const [currentUser,] = useRecoilState(user);
 
     const onInput = (e) => setMessage(e.target.value);
 
@@ -32,15 +32,13 @@ const Input = ({conversationId, sender, selectedContact, socket, setCurrentMessa
                 receiverId: user._id,
             })
 
-            setCurrentMessages([...currentMessages, m])
+            // setCurrentMessages([...currentMessages, m])
         }
 
         setMessage('');
     }
 
     const createConversation = async () => {
-
-
         if(currentUser._id && selectedContact._id){
             const conversation = await dataService.addConversation({
                 senderId: currentUser._id,

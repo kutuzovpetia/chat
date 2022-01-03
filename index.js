@@ -50,16 +50,11 @@ io.on('connection', function (socket) {
         const s = getUser(message.sender);
         const r = getUser(receiverId);
 
-        // if(s && r){
-        //     io.to(s.socketId).to(r.socketId).emit("getMessage", {message, receiverId})
-        // }else {
-        //     io.to(s.socketId).emit("getMessage", {message, receiverId})
-        // }
-
-
-        io.to(r.socketId).emit("getMessage", {message, receiverId})
-
-
+        if(s && r){
+            io.to(s.socketId).to(r.socketId).emit("getMessage", {message, receiverId})
+        }else {
+            io.to(s.socketId).emit("getMessage", {message, receiverId})
+        }
     });
 
     socket.on('disconnect', () => {

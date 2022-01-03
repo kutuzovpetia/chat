@@ -4,14 +4,11 @@ import Input from '../input/input';
 import ContactItem from "../contact-item";
 import {useEffect, useState} from "react";
 import DataService from "../../dataService";
-import {Link} from "react-router-dom";
-import ListRoomsItem from "../list-rooms-item";
-
 
 
 const NewMessage = ({onClose}) =>{
 
-    const dataService = new DataService();
+
 
     const [contacts, setContacts] = useState([]);
     const [selectedContact, setSelectedContact] = useState(null);
@@ -19,6 +16,7 @@ const NewMessage = ({onClose}) =>{
 
 
     useEffect(()=>{
+        const dataService = new DataService();
         (async function(){
            const users = await dataService.getAllUsers();
            setContacts(users);

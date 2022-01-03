@@ -98,7 +98,7 @@ const Rooms = ({socket, toggleModal}) =>{
                 {
                     conversation.filter((val)=>{
 
-                        if(filterValue == ""){ return val }
+                        if(filterValue === ""){ return val }
                         else if (val.members[1].firstName.toLowerCase().includes(filterValue.toLowerCase())){ return val}
 
                         }).map((item) => {

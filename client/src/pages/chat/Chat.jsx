@@ -1,6 +1,6 @@
 import s from './chat-style.module.sass';
 import arrow from '../../img/arrow-blue.svg';
-import camera from '../../img/camera.svg';
+// import camera from '../../img/camera.svg';
 import Input from "../../components/input";
 import Avatar from '../../components/avatar';
 import {Link, useParams} from "react-router-dom";
@@ -14,11 +14,15 @@ const Chat = ({socket}) =>{
 
     const [currentUser] = useRecoilState(u)
     const [currentMessages, setCurrentMessages] = useRecoilState(m);
-    // const [messages, setMessages] = useState([]);
+    const [arrivalMessage, setArrivalMessage] = useState(null)
     const [user, setUser] = useState({});
     let { id } = useParams(); // Conversation ID
 
-console.log(user)
+    useEffect(()=>{
+        socket.on('getMessage', ({ message }) =>{
+            setArrivalMessage(message);
+        })
+    }, [socket])
 
     useEffect(()=>{
         (async function(){
@@ -26,26 +30,20 @@ console.log(user)
             const companionId = conversation.data.members.find(u => u._id !== currentUser._id);
             setUser(companionId);
         })()
-    },[])
+    },[currentUser._id, id])
+
+    useEffect(()=>{
+        arrivalMessage &&
+        id === arrivalMessage.conversationId &&
+        setCurrentMessages((prev)=>[...prev , arrivalMessage]);
+    },[arrivalMessage, id, setCurrentMessages])
 
     useEffect(()=>{
         (async function(){
             const m = await axios.get(`/message/${id}`);
             setCurrentMessages(m.data);
-            // setMessages(m.data);
         })()
-    },[])
-
-
-    useEffect(()=>{
-        socket.on('getMessage', ({message, receiverId}) =>{
-            console.log(receiverId)
-            if (id === message.conversationId){
-                setCurrentMessages([...currentMessages, message])
-            }
-        })
-
-    }, [currentMessages])
+    },[id, setCurrentMessages])
 
 
     return(

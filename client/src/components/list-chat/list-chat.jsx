@@ -8,7 +8,7 @@ const ListChat = ({messages, currentUser}) =>{
     const scrollRef = useRef();
 
     useEffect(()=>{
-        scrollRef.current?.scrollIntoView({behavior: "smooth"})
+        scrollRef.current?.scrollIntoView({behavior: "smooth", inline: "nearest"})
     },[messages])
 
     return(

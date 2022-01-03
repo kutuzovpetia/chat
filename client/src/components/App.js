@@ -5,7 +5,7 @@ import Rooms from '../pages/list-rooms/list-rooms';
 import User from '../pages/user';
 import Registration from "../pages/registration";
 import Login from '../pages/login';
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {useRecoilState} from 'recoil';
 import {user, isLogged as logged, usersOnline as online, isModalOpen as m} from '../state/atoms';
 import axios from "axios";
