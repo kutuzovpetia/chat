@@ -1,5 +1,20 @@
 $appleBlue: #3478F6
 
+@mixin button
+  position: absolute
+  font-size: 13px
+  border-radius: 5px
+  border: 1px solid #636366
+  bottom: 20px
+  width: 82px
+  height: 28px
+  color: white
+  background-color: #636366
+  transition: all .3s
+  &:hover
+    color: #636366
+    background-color: transparent
+
 .messagesHeader
 
   .headerControls
@@ -14,20 +29,11 @@ $appleBlue: #3478F6
     h1
       font-weight: 600
   .btnLogOut
-    position: absolute
-    font-size: 13px
-    border-radius: 5px
-    border: 1px solid #636366
-    bottom: 20px
+    +button
     right: 20px
-    width: 82px
-    height: 28px
-    color: white
-    background-color: #636366
-    transition: all .3s
-    &:hover
-      color: #636366
-      background-color: transparent
+  .btnDelete
+    +button
+    left: 20px
 
 .inputSearch
   position: relative

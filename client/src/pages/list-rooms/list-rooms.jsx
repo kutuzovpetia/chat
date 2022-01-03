@@ -8,6 +8,7 @@ import { conversation as c, anchors as a, user, isLogged as logged, usersOnline 
 import {useEffect, useState} from "react";
 import DataService from "../../dataService";
 import AnchorItem from "../../components/anchor-item";
+import axios from "axios";
 
 const dataService = new DataService();
 
@@ -19,6 +20,8 @@ const Rooms = ({socket, toggleModal}) =>{
     const [currentUser, setCurrentUser] = useRecoilState(user);
     const [, setIsLogged] = useRecoilState(logged);
     const [, setUsersOnline] = useRecoilState(online);
+    const [selectedConversation, setSelectedConversation] = useState([]);
+    const [deletingMode, setDeletingMode] = useState(false);
 
 
     const [filterValue, setFilterValue] = useState('');
@@ -58,11 +61,21 @@ const Rooms = ({socket, toggleModal}) =>{
         socket.on('getUsers', users => setUsersOnline(users))
     }
 
+    const deletingModeToogle = () => {
+        !deletingMode && setSelectedConversation([]);
+        setDeletingMode(!deletingMode);
+    }
+
+    const deleteConversation = async () =>{
+      const res = await axios.delete('/conversation/remove', {data: selectedConversation});
+      console.log(res)
+    }
+
     return(
         <>
             <header className={s.messagesHeader}>
                 <div className={s.headerControls}>
-                    <button className={s.buttonEdit}>Edit</button>
+                    <button className={s.buttonEdit} onClick={deletingModeToogle}>Edit</button>
                     <h1>Messages</h1>
                     <button onClick={toggleModal}>
                         <img src={compose} alt="icon"/>
@@ -71,6 +84,14 @@ const Rooms = ({socket, toggleModal}) =>{
                     <button className={s.btnLogOut} onClick={logOut}>
                         Log Out
                     </button>
+
+                    {
+                        deletingMode &&
+                        <button className={s.btnDelete}
+                                onClick={deleteConversation}
+                        > Delete </button>
+                    }
+
                 </div>
                 <div className={s.inputSearch}>
                     <input type="text" placeholder={'Search'} onChange={onFilter}/>
@@ -102,14 +123,27 @@ const Rooms = ({socket, toggleModal}) =>{
                         else if (val.members[1].firstName.toLowerCase().includes(filterValue.toLowerCase())){ return val}
 
                         }).map((item) => {
-                            return <Link to={`/chat/${item._id}`} key={item._id}>
-                                        <ListRoomsItem
-                                            conversation={item}
-                                            currentUser={currentUser}
-                                            cbLongTouch={handlerInAnchor}
-                                            socket={socket}
-                                        />
-                                    </Link>
+                            // return <Link to={`/chat/${item._id}`} key={item._id}>
+                            //             <ListRoomsItem
+                            //                 conversation={item}
+                            //                 currentUser={currentUser}
+                            //                 cbLongTouch={handlerInAnchor}
+                            //                 socket={socket}
+                            //             />
+                            //         </Link>
+
+                            return <ListRoomsItem
+                                    conversation={item}
+                                    currentUser={currentUser}
+                                    cbLongTouch={handlerInAnchor}
+                                    socket={socket}
+                                    key={item._id}
+                                    selectedConversation={selectedConversation}
+                                    setSelectedConversation={setSelectedConversation}
+                                    deletingMode={deletingMode}
+                                    />
+
+
                         })
                 }
 
