@@ -11,7 +11,7 @@ const Registration = () => {
 
     const navigate = useNavigate();
     const inputFile = useRef(null);
-    const [avatar, setAvatar] = useState('https://avochka.ru/img/kartinka/1/enot_glass.jpg');
+    const [avatar, setAvatar] = useState('https://cspromogame.ru//storage/upload_images/avatars/3447.jpg');
     const [imageFile, setImageFile] = useState(null);
     const values = {
         firstName: '',

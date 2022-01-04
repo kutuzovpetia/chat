@@ -2,7 +2,6 @@ import s from './avatar.module.sass';
 import classNames from "classnames";
 import {LongPressDetectEvents, useLongPress} from "use-long-press";
 import {useState} from "react";
-
 import {useRecoilState} from 'recoil';
 import { usersOnline as uo } from "../../state/atoms";
 
@@ -37,7 +36,7 @@ const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouc
     return(
         <div className={s.avatarWrapper} {...bind}>
 
-            <img  src={url} alt="avatar" className={classes}/>
+            <img  src={url?.includes('data:image') || url?.includes('https://') ? url : `http://localhost:5001/images/${url}`} alt="avatar" className={classes}/>
             {
                 showOnline && <div className={classesOnline}></div>
             }
@@ -45,7 +44,7 @@ const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouc
             {
                 userName &&
                 <div className={s.statusWrapper}>
-                    {/*{newMessage && <div className={s.status}></div>}*/}
+                    {newMessage && <div className={s.status}></div>}
                     <div className={s.userName}>{userName}</div>
                 </div>
             }

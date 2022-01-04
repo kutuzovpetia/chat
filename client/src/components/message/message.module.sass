@@ -17,6 +17,7 @@ $page-background: white
     padding: 10px 20px
     border-radius: 25px
     font-size: 15px
+    cursor: pointer
     &:before, &:after
       content: ""
       position: absolute
@@ -71,12 +72,15 @@ $page-background: white
   li:nth-last-child(1)
     border: none
 
-
-
 .messageMenu
   @include menu
 
 .messageMenuActive
   @include menu
   display: block
+  li
+    transition: all .3s
+    &:hover
+      cursor: pointer
+      background-color: rgba(0, 0, 0, 0.33)
 

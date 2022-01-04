@@ -7,7 +7,7 @@ import ta from 'time-ago';
 import {Link} from "react-router-dom";
 
 
-const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversation, setSelectedConversation, deletingMode}) =>{
+const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversation, setSelectedConversation, deletingMode, socket}) =>{
 
     const {members} = conversation;
     const [user,] = useState(members.find(u => u._id !== currentUser._id));
@@ -16,11 +16,19 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversa
 
     useEffect(()=>{
         (async function(){
+
             const m = await axios.get(`/message/${conversation._id}`);
             setLastMessage(m.data[m.data.length-1]?.text);
-
             const time = m.data[m.data.length-1]?.createdAt
             time && setTimeLastMessage(ta.ago(time))
+
+            socket.on('getMessage', lastMessage => {
+                if(conversation._id === lastMessage.message.conversationId){
+                    setLastMessage(lastMessage.message.text)
+                    setTimeLastMessage(ta.ago(lastMessage.message.createdAt))
+                }
+            })
+
         })()
     },[conversation._id])
 

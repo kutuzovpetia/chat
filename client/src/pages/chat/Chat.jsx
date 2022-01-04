@@ -65,7 +65,7 @@ const Chat = ({socket}) =>{
                 </nav>
 
                 <Link to={`/user/${user._id}/${id}`} className={s.userName}>
-                    {user.firstName}
+                    {`${user.firstName} ${user.secondName}`}
                 </Link>
             </header>
 

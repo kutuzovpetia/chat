@@ -54,9 +54,9 @@ const NewMessage = ({onClose, socket}) =>{
                            e.target.value = '';
                        }}
                 />
-                <button>
-                    <img src={add} alt="icon"/>
-                </button>
+                {/*<button>*/}
+                {/*    <img src={add} alt="icon"/>*/}
+                {/*</button>*/}
             </div>
 
             <div className={s.content}>

@@ -6,7 +6,7 @@ const ContactItem = (props) => {
     return(
         <li onClick={()=>props.selectContact(props.contact)}>
             <div className={s.contactItem}>
-                <img className={s.contactItemImg} src={imgUrl} alt="avatar"/>
+                <img className={s.contactItemImg} src={`http://localhost:5001/images/${imgUrl}`} alt="avatar"/>
 
                 <div className={s.userData}>
                     <h1>{`${firstName} ${secondName}`}</h1>

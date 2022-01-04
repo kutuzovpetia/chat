@@ -75,7 +75,11 @@ const Rooms = ({socket, toggleModal}) =>{
         <>
             <header className={s.messagesHeader}>
                 <div className={s.headerControls}>
-                    <button className={s.buttonEdit} onClick={deletingModeToogle}>Edit</button>
+
+                    <button className={s.buttonEdit} onClick={deletingModeToogle}>
+                        {deletingMode ? 'OK' : 'Edit'}
+                    </button>
+
                     <h1>Messages</h1>
                     <button onClick={toggleModal}>
                         <img src={compose} alt="icon"/>
@@ -109,6 +113,7 @@ const Rooms = ({socket, toggleModal}) =>{
                                                 anchor={item}
                                                 cbLongTouch={handlerOutAnchor}
                                                 currentUser={currentUser}
+                                                socket={socket}
                                             />
                                         </Link>
                                     </li>
@@ -133,6 +138,7 @@ const Rooms = ({socket, toggleModal}) =>{
                                     selectedConversation={selectedConversation}
                                     setSelectedConversation={setSelectedConversation}
                                     deletingMode={deletingMode}
+                                    socket={socket}
                                     />
 
                         })
