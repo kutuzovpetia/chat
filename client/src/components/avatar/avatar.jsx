@@ -8,7 +8,7 @@ import { usersOnline as uo } from "../../state/atoms";
 
 
 
-const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouch, user}) =>{
+const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouch, user, showOnline}) =>{
 
     const [usersOnline,] = useRecoilState(uo);
     const online = usersOnline.some(u => u._id === user?._id)
@@ -38,12 +38,14 @@ const Avatar = ({id, url, large, medium, small, userName, newMessage, cbLongTouc
         <div className={s.avatarWrapper} {...bind}>
 
             <img  src={url} alt="avatar" className={classes}/>
-            <div className={classesOnline}></div>
+            {
+                showOnline && <div className={classesOnline}></div>
+            }
 
             {
                 userName &&
                 <div className={s.statusWrapper}>
-                    {newMessage && <div className={s.status}></div>}
+                    {/*{newMessage && <div className={s.status}></div>}*/}
                     <div className={s.userName}>{userName}</div>
                 </div>
             }

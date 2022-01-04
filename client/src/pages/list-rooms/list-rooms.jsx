@@ -67,8 +67,8 @@ const Rooms = ({socket, toggleModal}) =>{
     }
 
     const deleteConversation = async () =>{
-      const res = await axios.delete('/conversation/remove', {data: selectedConversation});
-      console.log(res)
+      await axios.delete('/conversation/remove', {data: selectedConversation});
+      setConversation([...conversation].filter(c => !selectedConversation.includes(c._id)));
     }
 
     return(
@@ -123,14 +123,6 @@ const Rooms = ({socket, toggleModal}) =>{
                         else if (val.members[1].firstName.toLowerCase().includes(filterValue.toLowerCase())){ return val}
 
                         }).map((item) => {
-                            // return <Link to={`/chat/${item._id}`} key={item._id}>
-                            //             <ListRoomsItem
-                            //                 conversation={item}
-                            //                 currentUser={currentUser}
-                            //                 cbLongTouch={handlerInAnchor}
-                            //                 socket={socket}
-                            //             />
-                            //         </Link>
 
                             return <ListRoomsItem
                                     conversation={item}
@@ -142,7 +134,6 @@ const Rooms = ({socket, toggleModal}) =>{
                                     setSelectedConversation={setSelectedConversation}
                                     deletingMode={deletingMode}
                                     />
-
 
                         })
                 }

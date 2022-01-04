@@ -148,7 +148,7 @@ const Registration = () => {
                                 />
 
                                 <div className={s.avatar}>
-                                    <Avatar url={avatar} large/>
+                                    <Avatar url={avatar} large showOnline={false}/>
                                     <button className={s.btn} onClick={onButtonClick}>
                                         Upload File
                                     </button>

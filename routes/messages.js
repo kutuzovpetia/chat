@@ -56,5 +56,15 @@ router.get('/liked/remove/:userId/:messageId',  async (req, res)=>{
     }
 });
 
+router.delete('/remove/:id',  async (req, res)=>{
+
+    try{
+        await Message.deleteOne({_id: req.params.id});
+        res.status(200).json({})
+    }catch (err){
+        res.status(500).json(err)
+    }
+});
+
 
 module.exports = router;

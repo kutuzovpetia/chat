@@ -14,16 +14,15 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversa
     const [lastMessage, setLastMessage] = useState('');
     const [timeLastMessage, setTimeLastMessage] = useState('');
 
-
     useEffect(()=>{
         (async function(){
             const m = await axios.get(`/message/${conversation._id}`);
             setLastMessage(m.data[m.data.length-1]?.text);
-            setTimeLastMessage(ta.ago(m.data[m.data.length-1]?.createdAt))
+
+            const time = m.data[m.data.length-1]?.createdAt
+            time && setTimeLastMessage(ta.ago(time))
         })()
-
     },[conversation._id])
-
 
     const onLongPress = (id) => cbLongTouch && cbLongTouch(id);
     const [enabled,] = useState(true);
@@ -33,9 +32,6 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversa
         cancelOnMovement: false,
         detect: LongPressDetectEvents.BOTH
     });
-
-
-    // console.log(selectedConversation)
 
     const onChecked = (e) =>{
         e.target.checked ?
@@ -55,7 +51,7 @@ const ListRoomsItem = ({conversation, currentUser, cbLongTouch, selectedConversa
                     />
                 }
 
-                <Avatar url={user.imgUrl} medium user={user}/>
+                <Avatar url={user.imgUrl} medium user={user} showOnline={true}/>
 
                 <Link to={`/chat/${conversation._id}`}>
                     <div className={s.itemContent} {...bind}>

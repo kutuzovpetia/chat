@@ -52,4 +52,9 @@ export default class DataService{
         return message;
     }
 
+    async removeMessage(id){
+        const message = await this.getData(`/message/remove/${id}`, `DELETE`);
+        return message;
+    }
+
 }

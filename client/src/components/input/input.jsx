@@ -3,14 +3,15 @@ import s from './input.module.sass';
 import send from "../../img/send.svg";
 import sendBlue from "../../img/send-blue.svg";
 import DataService from "../../dataService";
-import {user} from '../../state/atoms';
+import {user, conversation as c} from '../../state/atoms';
 import {useRecoilState} from "recoil";
 
-const Input = ({conversationId, sender, selectedContact, socket, setCurrentMessages, currentMessages}) =>{
+const Input = ({conversationId, sender, selectedContact, socket, on}) =>{
 
     const dataService = new DataService();
     const [message, setMessage] = useState('');
     const [currentUser,] = useRecoilState(user);
+    const [conversations, setConversation] = useRecoilState(c);
 
     const onInput = (e) => setMessage(e.target.value);
 
@@ -31,20 +32,26 @@ const Input = ({conversationId, sender, selectedContact, socket, setCurrentMessa
                 message: m,
                 receiverId: user._id,
             })
-
-            // setCurrentMessages([...currentMessages, m])
         }
 
         setMessage('');
     }
 
     const createConversation = async () => {
+
         if(currentUser._id && selectedContact._id){
             const conversation = await dataService.addConversation({
                 senderId: currentUser._id,
                 receiverId: selectedContact._id
             });
-            console.log(conversation);
+
+            await dataService.sendMessage({
+                conversationId: conversation._id,
+                sender,
+                text: message
+            })
+
+            setConversation([...conversations, conversation]);
         }
     }
 
@@ -57,8 +64,9 @@ const Input = ({conversationId, sender, selectedContact, socket, setCurrentMessa
             />
             <button className={s.buttonSend}
                     onClick={conversationId ? onSend : createConversation}
+                    disabled={!on || !message}
             >
-                <img src={conversationId ? sendBlue : send} alt="send"/>
+                <img src={on && message ? sendBlue : send} alt="send"/>
             </button>
         </div>
     )

@@ -5,17 +5,17 @@ import ContactItem from "../contact-item";
 import {useEffect, useState} from "react";
 import DataService from "../../dataService";
 import {useRecoilState} from 'recoil';
-import {user} from '../../state/atoms';
+import {user, conversation as c} from '../../state/atoms';
 
 
-const NewMessage = ({onClose}) =>{
-
-
+const NewMessage = ({onClose, socket}) =>{
 
     const [contacts, setContacts] = useState([]);
     const [selectedContact, setSelectedContact] = useState(null);
+    const [selectConversationId, setSelectConversationId] = useState(null);
     const [filterValue, setFilterValue] = useState('');
     const [currentUser,] = useRecoilState(user);
+    const [conversation,] = useRecoilState(c);
 
 
     useEffect(()=>{
@@ -28,6 +28,16 @@ const NewMessage = ({onClose}) =>{
 
     const onFilter = (e) => setFilterValue(e.target.value);
 
+    const selectContact = (contact) =>{
+        setSelectedContact(contact)
+
+        conversation.forEach(item=>{
+            if(item.members[1]._id === contact._id  && item.members[0]._id === currentUser._id){
+                setSelectConversationId(item._id)
+            }
+        })
+    }
+
     return(
         <div className={s.newMessage}>
             <header>
@@ -39,6 +49,10 @@ const NewMessage = ({onClose}) =>{
                 <input type="text"
                        value={selectedContact ? `${selectedContact.firstName} ${selectedContact.secondName}` : filterValue}
                        onChange={onFilter}
+                       onFocus={(e)=>{
+                           setSelectedContact(null);
+                           e.target.value = '';
+                       }}
                 />
                 <button>
                     <img src={add} alt="icon"/>
@@ -53,7 +67,10 @@ const NewMessage = ({onClose}) =>{
                             else if (val.firstName.toLowerCase().includes(filterValue.toLowerCase())){ return val}
                         }).map((c) => {
                             if(currentUser._id !== c._id){
-                                return <ContactItem key={c._id} contact={c} setSelectedContact={setSelectedContact}/>
+                                return <ContactItem key={c._id}
+                                                    contact={c}
+                                                    setSelectedContact={setSelectedContact}
+                                                    selectContact={selectContact}/>
                             }
                         })
                     }
@@ -61,7 +78,12 @@ const NewMessage = ({onClose}) =>{
             </div>
 
             <footer>
-                <Input selectedContact={selectedContact}/>
+                <Input conversationId={selectConversationId}
+                       selectedContact={selectedContact}
+                       on={!!selectedContact}
+                       socket={socket}
+                       sender={currentUser._id}
+                />
             </footer>
 
         </div>

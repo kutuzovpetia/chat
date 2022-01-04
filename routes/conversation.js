@@ -20,7 +20,8 @@ router.post('/add',  async (req, res)=>{
 
     try{
         const savedConversation = await conversation.save();
-        res.status(200).json(savedConversation)
+        const c = await savedConversation.populate('members');
+        res.status(200).json(c)
     }catch (err){
         res.status(500).json(err)
     }
@@ -82,8 +83,6 @@ router.delete('/remove', async (req, res)=>{
             }
         })
 
-        // console.log("Conversation: ", res)
-        // console.log("Messages: ", m)
         res.status(200).json({conversationDeleted, messagesDeleted})
 
     }catch (err){

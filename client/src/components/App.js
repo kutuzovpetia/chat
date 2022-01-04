@@ -56,7 +56,7 @@ function App() {
         <div className={s.app}>
 
             {
-                isModalOpen && <Modal content={<NewMessage onClose={toogleModal}/>}/>
+                isModalOpen && <Modal content={<NewMessage onClose={toogleModal} socket={socket}/>}/>
             }
 
             <Routes>

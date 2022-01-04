@@ -4,7 +4,7 @@ const ContactItem = (props) => {
     const {imgUrl, firstName, secondName, phoneOrEmail} = props.contact;
 
     return(
-        <li onClick={()=>props.setSelectedContact(props.contact)}>
+        <li onClick={()=>props.selectContact(props.contact)}>
             <div className={s.contactItem}>
                 <img className={s.contactItemImg} src={imgUrl} alt="avatar"/>
 

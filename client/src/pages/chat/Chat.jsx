@@ -77,6 +77,7 @@ const Chat = ({socket}) =>{
                        socket={socket}
                        setCurrentMessages={setCurrentMessages}
                        currentMessages={currentMessages}
+                       on={true}
                 />
             </footer>
         </div>

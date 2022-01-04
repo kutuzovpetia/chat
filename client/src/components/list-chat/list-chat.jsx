@@ -16,7 +16,7 @@ const ListChat = ({messages, currentUser}) =>{
             <ul className={s.chatContent}>
                 {
                     messages && messages.map(m => {
-                        return  <Message key={m._id} own={currentUser._id === m.sender} text={m.text}/>
+                        return  <Message key={m._id} id={m._id} own={currentUser._id === m.sender} text={m.text}/>
                     })
                 }
                 <div ref={scrollRef}></div>

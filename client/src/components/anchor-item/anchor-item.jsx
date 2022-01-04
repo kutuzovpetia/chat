@@ -17,6 +17,7 @@ const AnchorItem = ({cbLongTouch, anchor, currentUser}) =>{
                 newMessage
                 cbLongTouch={cbLongTouch}
                 user={user}
+                showOnline={true}
             />
         </div>
     )
